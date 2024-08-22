@@ -1,6 +1,6 @@
 #include <stdbool.h>
 
-bool is_sorted(int n, int* nums);
+bool is_sorted(int n, int* arr, int* sorted);
 int test_sort(int* (sort)(int, int*), bool inplace);
 
 int* random_arr(int n);

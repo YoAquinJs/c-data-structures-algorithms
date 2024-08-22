@@ -4,9 +4,19 @@
 
 #include "utils.h"
 
-bool is_sorted(int n, int* nums){
-    for (int i=1; i < n; i++){
-        if (nums[i] < nums[i-1])
+int cmp(const void *a, const void *b) {
+    int int_a = *(int *)a;
+    int int_b = *(int *)b;
+    
+    if (int_a < int_b) return -1;
+    if (int_a > int_b) return 1;
+    return 0;
+}
+
+bool is_sorted(int n, int* copy_arr, int* sorted){
+    qsort(copy_arr, n, sizeof(int), cmp);
+    for (int i=0; i < n; i++){
+        if (copy_arr[i] != sorted[i])
             return false;
     }
     return true;
@@ -15,24 +25,26 @@ bool is_sorted(int n, int* nums){
 int test_sort(int* (sort)(int, int*), bool inplace){
     srand(time(0));
 
-    int max_n = 5;
-    int tests = 10;
-    int *arr, *sorted;
+    int max_n = 1000;
+    int tests = 1000;
+    int *arr, *copy_arr, *sorted;
     int n;
 
     for (; tests > 0; tests--){
         n = rand() % max_n;
         arr = random_arr(n);
-        if (inplace){
-            sorted = cp_arr(n, arr);
-            sort(n, sorted);
-        }else
+        copy_arr = cp_arr(n, arr);
+
+        if (inplace)
+            sorted = sort(n, cp_arr(n, arr));
+        else
             sorted = sort(n, arr);
 
-        if (!is_sorted(n, sorted))
+        if (!is_sorted(n, copy_arr, sorted))
             break;
 
         free(arr);
+        free(copy_arr);
         free(sorted);
         arr = NULL;
     }

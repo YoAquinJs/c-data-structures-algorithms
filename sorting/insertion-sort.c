@@ -3,7 +3,7 @@
 #include <memory.h>
 #include <limits.h>
 
-#include "utils.h"
+#include "../utils/utils.h"
 
 int* insertion_sort(int n, int* arr){
     if (n == 0)
@@ -23,7 +23,7 @@ int* insertion_sort(int n, int* arr){
     return arr;
 }
 
-//gcc insertion-sort.c utils.c -o main; ./main
+//gcc insertion-sort.c ../utils/*.c -o main; ./main
 int main(){
     int passed = test_sort(insertion_sort, true);
 
