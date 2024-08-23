@@ -28,6 +28,27 @@ int cmp_desc(const void *a, const void *b) {
     return 0;
 }
 
+IsSorted is_sorted(int n, int* arr, bool ascendant){
+    IsSorted result;
+    result.sorted = false;
+
+    int *expected = cp_arr(n, arr);
+    result.expected = expected;
+
+    if (!expected)
+        return result;
+
+    qsort(expected, n, sizeof(int), ascendant ? cmp_ascd : cmp_desc);
+
+    for (int i=0; i < n; i++){
+        if (expected[i] != arr[i])
+            return result;
+    }
+
+    result.sorted = true;
+    return result;
+}
+
 int* random_arr(int n){
     if (n < 1)
         return NULL;
@@ -118,4 +139,30 @@ void print_arr(int n, int* arr){
     }
 
     printf(" ]\n");
+}
+
+int* generate_test_size(int count, int max){
+    if (count < 6){
+        printf("too few tests");
+        return NULL;
+    }
+
+    int* tests = malloc(sizeof(int)*count);
+    if (!tests){
+        printf("unable to allocate tests_sizes\n");
+        return NULL;
+    }
+
+    tests[0] = 0;
+    tests[1] = 1;
+    tests[2] = 2;
+    tests[--count] = max;
+    tests[--count] = max-1;
+    tests[--count] = max-2;
+
+    int dist = (max-6)/count;
+    for (int i=3; i < count; i++)
+        tests[i] = tests[i-1]+dist;
+
+    return tests;
 }

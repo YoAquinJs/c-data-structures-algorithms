@@ -2,71 +2,57 @@
 #include <stdlib.h>
 
 #include "utils.h"
+#include "../utils/utils.h"
 
-int cmp_ascd(const void *a, const void *b) {
-    int int_a = *(int *)a;
-    int int_b = *(int *)b;
-    
-    if (int_a < int_b) return -1;
-    if (int_a > int_b) return 1;
-    return 0;
-}
-
-int cmp_desc(const void *a, const void *b) {
-    int int_a = *(int *)a;
-    int int_b = *(int *)b;
-    
-    if (int_a < int_b) return 1;
-    if (int_a > int_b) return -1;
-    return 0;
-}
-
-bool is_sorted(int n, int* sorted_arr, int* sorted, bool ascendant){
-    for (int i=0; i < n; i++){
-        if (sorted_arr[i] != sorted[i])
-            return false;
-    }
-    return true;
-}
+#define MAX_ARR_N 1000
+#define TESTS 1000
 
 int test_sort(int* (sort)(int, int*), bool inplace, bool ascendant){
-    int max_n = 10;
-    int tests = 1000;
-    int *arr, *sorted_arr, *sorted;
-    int n;
+    int tests_left = TESTS;
+    int* tests = generate_test_size(tests_left, MAX_ARR_N);
+    if (!tests)
+        return tests_left;
 
-    for (; tests > 0; tests--){
-        n = rand() % max_n;
+    IsSorted isSorted;
+    int *arr, *attempted, n;
+    for (tests_left--; tests_left > -1; tests_left--){
+        n = tests[tests_left];
         arr = random_arr(n);
-        sorted_arr = cp_arr(n, arr);
-        qsort(sorted_arr, n, sizeof(int), ascendant ? cmp_ascd : cmp_desc);
+        if (!arr)
+            return tests_left;
 
         if (inplace)
-            sorted = sort(n, cp_arr(n, arr));
+            attempted = sort(n, cp_arr(n, arr));
         else
-            sorted = sort(n, arr);
+            attempted = sort(n, arr);
 
-        if (!is_sorted(n, sorted_arr, sorted, ascendant))
+        isSorted = is_sorted(n, attempted, ascendant);
+        if (!isSorted.expected)
+            return tests_left;
+
+        if (!isSorted.sorted)
             break;
 
         free(arr);
-        free(sorted_arr);
-        free(sorted);
-        arr = NULL;
+        free(attempted);
+        free(isSorted.expected);
     }
 
-    if (!arr)
+    if (isSorted.sorted)
         return 0;
 
-    printf("algorithm failed size %d\nmissing tests %d\n\n", n, tests);
+    printf("algorithm failed, size: %d\n", n);
+    printf("missing tests %d\n\n", tests_left);
+    printf("failed on:\n");
     print_arr(n, arr);
-    printf("sorted:\n");
-    print_arr(n, sorted_arr);
     printf("attempt:\n");
-    print_arr(n, sorted);
+    print_arr(n, attempted);
+    printf("expected:\n");
+    print_arr(n, isSorted.expected);
 
     free(arr);
-    free(sorted);
-    free(sorted_arr);
-    return tests;
+    free(attempted);
+    free(isSorted.expected);
+
+    return tests_left;
 }
