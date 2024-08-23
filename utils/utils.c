@@ -1,6 +1,8 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
 
 #include "utils.h"
 
@@ -8,23 +10,82 @@ void set_rand_seed(){
     srand(time(0));
 }
 
+int cmp_ascd(const void *a, const void *b) {
+    int int_a = *(int *)a;
+    int int_b = *(int *)b;
+    
+    if (int_a < int_b) return -1;
+    if (int_a > int_b) return 1;
+    return 0;
+}
+
+int cmp_desc(const void *a, const void *b) {
+    int int_a = *(int *)a;
+    int int_b = *(int *)b;
+    
+    if (int_a < int_b) return 1;
+    if (int_a > int_b) return -1;
+    return 0;
+}
+
 int* random_arr(int n){
-    if (n == 0)
+    if (n < 1)
         return NULL;
 
-    #define rand_half RAND_MAX/2
     int* arr = malloc(sizeof(int)*n);
-    for (n--; n > -1; n--)
-        arr[n] = rand() - rand_half;
+    if (!arr){
+        printf("unable to allocate random arr\n");
+        return NULL;
+    }
+
+    for (int i=0; i<n; i++)
+        arr[i] = rand() - rand_half;
+
+    return arr;
+}
+
+int* sorted_arr(int n, bool ascendant, int first){
+    if (n < 1)
+        return NULL;
+
+    const int num_max_dist = 100;
+
+    int* arr = malloc(sizeof(int)*n);
+    if (!arr){
+        printf("unable to allocate sorted arr\n");
+        return NULL;
+    }
+
+    arr[0] = first;
+
+    int sign = ascendant ? 1 : -1;
+    int i, next;
+    for (i=1; i < n; i++){
+        if (__builtin_add_overflow(arr[i-1], sign*(rand()%num_max_dist), &next))
+            break;
+        arr[i] = next;
+    }
+
+    if (i == n)
+        return arr;
+ 
+    int left = ascendant ? INT_MAX : INT_MIN;
+    for (; i < n; i++)
+        arr[i] = left;
 
     return arr;
 }
 
 int* cp_arr(int n, int* arr){
-    if (n == 0)
+    if (n < 1)
         return NULL;
 
     int* cp = malloc(sizeof(int)*n);
+    if (!cp){
+        printf("unable to allocate cp_arr\n");
+        return NULL;
+    }
+
     for (n--; n > -1; n--)
         cp[n] = arr[n];
 
@@ -32,24 +93,26 @@ int* cp_arr(int n, int* arr){
 }
 
 void print_arr(int n, int* arr){
-    if (n == 0){
+    if (n < 1){
         printf("[]\n");
         return;
     }
 
     printf("[ %d", arr[0]);
+
     const int col_size = 4;
     int col = 1;
-    for (int i = 1; i < n; i++){
-        printf(",\t%d", arr[i]);
+    for (int i=1; i < n; i++){
         col++;
+        printf(",\t%d", arr[i]);
+
         if (col % col_size != 0)
             continue;
 
-        if (i == n-1)
+        i++;
+        if (i >= n)
             break;
 
-        i++;
         col++;
         printf(",\n  %d", arr[i]);
     }
