@@ -11,7 +11,7 @@ void alloc_vector(std::vector<int>& nums, int n) {
 }
 
 void bigo_1(std::vector<int>& nums){
-    nums.capacity();
+    int len = nums.capacity();
 }
 void bigo_n(std::vector<int>& nums){
     for (int n : nums);
