@@ -10,22 +10,30 @@ void set_rand_seed(){
     srand(time(0));
 }
 
+int get_rand_in_range(int a, int b){
+    if (b < a){
+        printf("invalid range\n");
+        return 0;
+    }
+
+    if (a == b)
+        return a;
+
+    return a + (rand() % (b-a + 1));
+}
+
+int get_rand_in_array(int n, int* arr){
+    if (!arr)
+        return 0;
+    return get_rand_in_range(arr[0], arr[n-1]);
+}
+
 int cmp_ascd(const void *a, const void *b) {
-    int int_a = *(int *)a;
-    int int_b = *(int *)b;
-    
-    if (int_a < int_b) return -1;
-    if (int_a > int_b) return 1;
-    return 0;
+    return *(int*)a - *(int*)b;
 }
 
 int cmp_desc(const void *a, const void *b) {
-    int int_a = *(int *)a;
-    int int_b = *(int *)b;
-    
-    if (int_a < int_b) return 1;
-    if (int_a > int_b) return -1;
-    return 0;
+    return *(int*)b - *(int*)a;
 }
 
 IsSorted is_sorted(int n, int* arr, bool ascendant){
@@ -98,7 +106,7 @@ int* sorted_arr(int n, bool ascendant, int first){
 }
 
 int* cp_arr(int n, int* arr){
-    if (n < 1)
+    if (n < 1 || !arr)
         return NULL;
 
     int* cp = malloc(sizeof(int)*n);
@@ -160,7 +168,7 @@ int* generate_test_size(int count, int max){
     tests[--count] = max-1;
     tests[--count] = max-2;
 
-    int dist = (max-6)/count;
+    int dist = count/(max-6);
     for (int i=3; i < count; i++)
         tests[i] = tests[i-1]+dist;
 

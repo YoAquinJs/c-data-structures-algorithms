@@ -45,7 +45,7 @@ int test_sort(int* (sort)(int, int*), bool inplace, bool ascendant){
     printf("missing tests %d\n\n", tests_left);
     printf("failed on:\n");
     print_arr(n, arr);
-    printf("attempt:\n");
+    printf("attempted:\n");
     print_arr(n, attempted);
     printf("expected:\n");
     print_arr(n, isSorted.expected);
