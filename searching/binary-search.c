@@ -3,7 +3,7 @@
 #include "utils.h"
 #include "../utils/utils.h"
 
-int bsearch(int n, int* arr, int key){
+int binary_search(int n, int* arr, int key){
     if (n == 0)
         return -1;
 
@@ -24,10 +24,11 @@ int bsearch(int n, int* arr, int key){
 }
 
 int _recursive_bsearch(int* arr, int key, int l, int r){
+    if (l > r)
+        return -1;
+
     int mid = l + (r-l)/2;
 
-    if (l == r)
-        return arr[mid] == key ? mid : -1;
     if (arr[mid] == key)
         return mid;
 
@@ -46,7 +47,7 @@ int recursive_bsearch(int n, int* arr, int key){
 int main(){
     set_rand_seed();
 
-    if (test_search(bsearch) == 0)
+    if (test_search(binary_search) == 0)
         printf("passed bsearch\n");
     if (test_search(recursive_bsearch) == 0)
         printf("passed recursive bsearch\n");
