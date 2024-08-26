@@ -1,0 +1,1 @@
+code bin-sum for bit arrs
