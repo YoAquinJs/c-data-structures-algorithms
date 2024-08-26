@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "utils.h"
+#include "test.h"
 #include "../utils/utils.h"
 
 int* selection_sort_ascd(int n, int* arr){
@@ -48,7 +48,7 @@ int* selection_sort_desc(int n, int* arr){
     return arr;
 }
 
-// gcc selection-sort.c utils.c ../utils/*.c -o main; ./main
+// gcc selection-sort.c test.c ../utils/*.c -o main; ./main
 int main(){
     set_rand_seed();
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "utils.h"
+#include "test.h"
 #include "../utils/utils.h"
 
 int* insertion_sort_ascd(int n, int *arr){
@@ -40,7 +40,7 @@ int* insertion_sort_desc(int n, int *arr){
     return arr;
 }
 
-// gcc insertion-sort.c utils.c ../utils/*.c -o main; ./main
+// gcc insertion-sort.c test.c ../utils/*.c -o main; ./main
 int main(){
     set_rand_seed();
 

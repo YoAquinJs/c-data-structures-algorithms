@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "utils.h"
+#include "test.h"
 #include "../utils/utils.h"
 
 int binary_search(int n, int* arr, int key){
@@ -43,7 +43,7 @@ int recursive_bsearch(int n, int* arr, int key){
     return _recursive_bsearch(arr, key, 0, n-1);
 }
 
-// gcc binary-search.c utils.c ../utils/*.c -o main; ./main
+// gcc binary-search.c test.c ../utils/*.c -o main; ./main
 int main(){
     set_rand_seed();
 

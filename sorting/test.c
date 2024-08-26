@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utils.h"
+#include "test.h"
 #include "../utils/utils.h"
 
 #define MAX_ARR_N 1000

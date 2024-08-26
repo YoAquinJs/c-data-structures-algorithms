@@ -26,11 +26,8 @@ void bigo_n_cubed(std::vector<int>& nums){
             for (int n : nums);
 }
 void bigo_n2_plus_n2(std::vector<int>& nums){
-    for (int n : nums)
-        for (int n : nums);
-
-    for (int n : nums)
-        for (int n : nums);
+    bigo_n_squared(nums);
+    bigo_n_cubed(nums);
 }
 int count_perm(int n) {
     if (n <= 0)

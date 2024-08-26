@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utils.h"
+#include "test.h"
 #include "../utils/utils.h"
 
 int linear_search(int n, int* arr, int elem){
@@ -12,7 +12,7 @@ int linear_search(int n, int* arr, int elem){
     return -1;
 }
 
-// gcc linear-search.c utils.c ../utils/*.c -o main; ./main
+// gcc linear-search.c test.c ../utils/*.c -o main; ./main
 int main(){
     set_rand_seed();
 
