@@ -36,25 +36,15 @@ int cmp_desc(const void *a, const void *b) {
     return *(int*)b - *(int*)a;
 }
 
-IsSorted is_sorted(int n, int* arr, bool ascendant){
-    IsSorted result;
-    result.sorted = false;
-
-    int *expected = cp_arr(n, arr);
-    result.expected = expected;
-
-    if (!expected)
-        return result;
-
-    qsort(expected, n, sizeof(int), ascendant ? cmp_ascd : cmp_desc);
+bool is_sorted(int n, int* original_arr, int* arr, bool ascendant){
+    qsort(original_arr, n, sizeof(int), ascendant ? cmp_ascd : cmp_desc);
 
     for (int i=0; i < n; i++){
-        if (expected[i] != arr[i])
-            return result;
+        if (original_arr[i] != arr[i])
+            return false;
     }
 
-    result.sorted = true;
-    return result;
+    return true;
 }
 
 int* random_arr(int n){

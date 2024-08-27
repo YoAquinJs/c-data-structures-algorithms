@@ -7,52 +7,49 @@
 #define MAX_ARR_N 1000
 #define TESTS 1000
 
-int test_sort(int* (sort)(int, int*), bool inplace, bool ascendant){
+int test_sort(void (sort)(int, int*), bool ascendant){
     int tests_left = TESTS;
     int* tests = generate_test_size(tests_left, MAX_ARR_N);
     if (!tests)
         return tests_left;
 
-    IsSorted isSorted;
-    int *arr, *attempted, n;
+    int *arr, *sorted_arr, *attempted, n;
     for (tests_left--; tests_left > -1; tests_left--){
         n = tests[tests_left];
         arr = random_arr(n);
-        if (!arr)
-            return tests_left;
+        sorted_arr = cp_arr(n, arr);
+        attempted = cp_arr(n, arr);
+        if (n > 0 && (!arr || !sorted_arr || !attempted)){
+            free(tests);
+            return tests_left+1;
+        }
 
-        if (inplace)
-            attempted = sort(n, cp_arr(n, arr));
-        else
-            attempted = sort(n, arr);
+        sort(n, attempted);
 
-        isSorted = is_sorted(n, attempted, ascendant);
-        if (!isSorted.expected)
-            return tests_left;
-
-        if (!isSorted.sorted)
+        if (!is_sorted(n, sorted_arr, attempted, ascendant))
             break;
 
         free(arr);
+        free(sorted_arr);
         free(attempted);
-        free(isSorted.expected);
     }
 
-    if (isSorted.sorted)
+    free(tests);
+    if (tests_left == -1)
         return 0;
 
-    printf("algorithm failed, size: %d\n", n);
-    printf("missing tests %d\n\n", tests_left);
     printf("failed on:\n");
     print_arr(n, arr);
     printf("attempted:\n");
     print_arr(n, attempted);
     printf("expected:\n");
-    print_arr(n, isSorted.expected);
+    print_arr(n, sorted_arr);
+    printf("algorithm failed, size: %d\n", n);
+    printf("missing tests %d\n\n", tests_left);
 
     free(arr);
+    free(sorted_arr);
     free(attempted);
-    free(isSorted.expected);
 
     return tests_left;
 }

@@ -4,9 +4,9 @@
 #include "test.h"
 #include "../utils/utils.h"
 
-int* selection_sort_ascd(int n, int* arr){
+void selection_sort_ascd(int n, int* arr){
     if (n == 0)
-        return arr;
+        return;
 
     int min, tmp;
     for (int i=0; i < n-1; i++){
@@ -22,13 +22,11 @@ int* selection_sort_ascd(int n, int* arr){
         arr[i] = tmp;
 
     }
-
-    return arr;
 }
 
-int* selection_sort_desc(int n, int* arr){
+void selection_sort_desc(int n, int* arr){
     if (n == 0)
-        return arr;
+        return;
 
     int max, tmp;
     for (int i=0; i < n-1; i++){
@@ -44,18 +42,16 @@ int* selection_sort_desc(int n, int* arr){
         arr[i] = tmp;
 
     }
-
-    return arr;
 }
 
 // gcc selection-sort.c test.c ../utils/*.c -o main; ./main
 int main(){
     set_rand_seed();
 
-    if (test_sort(selection_sort_ascd, true, true) == 0)
+    if (test_sort(selection_sort_ascd, true) == 0)
         printf("passed ascendant!\n");
 
-    if (test_sort(selection_sort_desc, true, false) == 0)
+    if (test_sort(selection_sort_desc, false) == 0)
         printf("passed descendant!\n");
 
     return 0;
