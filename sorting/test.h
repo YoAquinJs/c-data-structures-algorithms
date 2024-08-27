@@ -1,4 +1,5 @@
 #pragma once
 #include <stdbool.h>
 
-int test_sort(void (sort)(int, int*), bool ascendant);
+typedef void (Sort)(int, int*);
+int test_sort(Sort sort, bool ascendant);

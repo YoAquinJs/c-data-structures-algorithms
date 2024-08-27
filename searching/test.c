@@ -16,7 +16,7 @@ bool test_key_search(int* arr, int* expected, int attempted, int key){
     return true;
 }
 
-int test_search(int (search)(int, int*, int)){
+int test_search(Search search){
     int tests_left = TESTS;
     int* tests = generate_test_size(tests_left, MAX_ARR_N);
     if (!tests)

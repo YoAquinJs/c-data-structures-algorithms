@@ -7,7 +7,7 @@
 #define MAX_ARR_N 1000
 #define TESTS 1000
 
-int test_sort(void (sort)(int, int*), bool ascendant){
+int test_sort(Sort sort, bool ascendant){
     int tests_left = TESTS;
     int* tests = generate_test_size(tests_left, MAX_ARR_N);
     if (!tests)
