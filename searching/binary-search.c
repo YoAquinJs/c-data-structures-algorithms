@@ -1,7 +1,4 @@
-#include <stdio.h>
-
-#include "test.h"
-#include "../utils/utils.h"
+#include "test-search.h"
 
 int binary_search(int n, int* arr, int key){
     if (n == 0)
@@ -41,16 +38,4 @@ int recursive_bsearch(int n, int* arr, int key){
     if (n == 0)
         return -1;
     return _recursive_bsearch(arr, key, 0, n-1);
-}
-
-// gcc binary-search.c test.c ../utils/*.c -o main; ./main
-int main(){
-    set_rand_seed();
-
-    if (test_search(binary_search) == 0)
-        printf("passed bsearch\n");
-    if (test_search(recursive_bsearch) == 0)
-        printf("passed recursive bsearch\n");
-
-    return 0;
 }

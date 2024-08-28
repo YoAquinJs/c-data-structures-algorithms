@@ -1,10 +1,6 @@
-#include <stdio.h>
-#include <stdbool.h>
+#include "test-sort.h"
 
-#include "test.h"
-#include "../utils/utils.h"
-
-void selection_sort_ascd(int n, int* arr){
+void selection_sort(int n, int* arr){
     if (n == 0)
         return;
 
@@ -42,17 +38,4 @@ void selection_sort_desc(int n, int* arr){
         arr[i] = tmp;
 
     }
-}
-
-// gcc selection-sort.c test.c ../utils/*.c -o main; ./main
-int main(){
-    set_rand_seed();
-
-    if (test_sort(selection_sort_ascd, true) == 0)
-        printf("passed ascendant!\n");
-
-    if (test_sort(selection_sort_desc, false) == 0)
-        printf("passed descendant!\n");
-
-    return 0;
 }

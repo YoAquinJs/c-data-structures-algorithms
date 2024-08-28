@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-#include "test.h"
+#include "test-search.h"
 #include "../utils/utils.h"
 
 #define MAX_ARR_N 1000

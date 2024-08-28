@@ -1,10 +1,6 @@
-#include <stdio.h>
-#include <stdbool.h>
+#include "test-sort.h"
 
-#include "test.h"
-#include "../utils/utils.h"
-
-void exchange_sort_ascd(int n, int* arr){
+void exchange_sort(int n, int* arr){
     if (n == 0)
         return;
 
@@ -34,17 +30,4 @@ void exchange_sort_desc(int n, int* arr){
             }
         }
     }
-}
-
-// gcc insertion-sort.c test.c ../utils/*.c -o main; ./main
-int main(){
-    set_rand_seed();
-
-    if (test_sort(exchange_sort_ascd, true) == 0)
-        printf("passed ascendant!\n");
-
-    if (test_sort(exchange_sort_desc, false) == 0)
-        printf("passed descendant!\n");
-
-    return 0;
 }
