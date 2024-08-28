@@ -125,7 +125,7 @@ void run_category_tests(const char *category_name) {
     }
 
     printf("running all tests in '%s'...\n", category_name);
-    Test* category_tests = get_category_tests(category);
+    const Test* category_tests = get_category_tests(category);
     for (int i=0; i < TESTS_BY_CATEGORY_COUNT[category]; i++){
         printf("\n");
         if (!run_test(category_tests[i]))
