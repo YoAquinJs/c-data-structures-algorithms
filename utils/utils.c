@@ -139,7 +139,7 @@ void print_arr(int n, int* arr){
     printf(" ]\n");
 }
 
-int* generate_test_size(int count, int max){
+int* generate_test_sizes(int count, int max){
     if (count < 6){
         printf("too few tests");
         return NULL;

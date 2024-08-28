@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-extern bool print_on_fail;
+extern bool PRINT_ON_FAIL;
 
 #define invalid -1
 
@@ -36,5 +36,9 @@ extern const Test* TESTS_BY_CATEGORY[];
 Category get_category(const char* category);
 Test get_test(const char* test);
 
-Test* get_category_tests(Category category);
+const Test* get_category_tests(Category category);
 bool run_test(Test test);
+
+void run_all_tests();
+void run_category_tests(const char *category);
+void run_single_test(const char *test_name);

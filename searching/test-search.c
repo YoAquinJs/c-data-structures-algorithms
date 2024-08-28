@@ -3,6 +3,7 @@
 #include <limits.h>
 
 #include "test-search.h"
+#include "../test-map.h"
 #include "../utils/utils.h"
 
 #define MAX_ARR_N 1000
@@ -18,7 +19,7 @@ bool test_key_search(int* arr, int* expected, int attempted, int key){
 
 int test_search(Search search){
     int tests_left = TESTS;
-    int* tests = generate_test_size(tests_left, MAX_ARR_N);
+    int* tests = generate_test_sizes(tests_left, MAX_ARR_N);
     if (!tests)
         return tests_left;
 
@@ -55,17 +56,17 @@ int test_search(Search search){
         free(arr_copy);
     }
 
-    // printf("%d\n", tests_left);
     free(tests);
     if (tests_left == -1)
         return 0;
 
-    printf("algorithm failed, size: %d\n", n);
-    printf("missing tests %d\n\n", tests_left);
-    printf("failed on:\n");
-    print_arr(n, arr);
-    printf("attempted: %d\n", attempted);
-    printf("expected: %d \n", expected ? *expected : -1);
+    if (PRINT_ON_FAIL){
+        printf("algorithm failed, size: %d\n", n);
+        printf("failed on:\n");
+        print_arr(n, arr);
+        printf("attempted: %d\n", attempted);
+        printf("expected: %d \n", expected ? *expected : -1);
+    }
 
     free(arr);
     free(arr_copy);

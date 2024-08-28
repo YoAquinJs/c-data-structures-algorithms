@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "test-sort.h"
+#include "../test-map.h"
 #include "../utils/utils.h"
 
 #define MAX_ARR_N 1000
@@ -9,7 +10,7 @@
 
 int test_sort(Sort sort, bool ascendant){
     int tests_left = TESTS;
-    int* tests = generate_test_size(tests_left, MAX_ARR_N);
+    int* tests = generate_test_sizes(tests_left, MAX_ARR_N);
     if (!tests)
         return tests_left;
 
@@ -38,18 +39,18 @@ int test_sort(Sort sort, bool ascendant){
     if (tests_left == -1)
         return 0;
 
-    printf("failed on:\n");
-    print_arr(n, arr);
-    printf("attempted:\n");
-    print_arr(n, attempted);
-    printf("expected:\n");
-    print_arr(n, sorted_arr);
-    printf("algorithm failed, size: %d\n", n);
-    printf("missing tests %d\n\n", tests_left);
+    if (PRINT_ON_FAIL){
+        printf("algorithm failed, size: %d\n", n);
+        printf("failed on:\n");
+        print_arr(n, arr);
+        printf("attempted:\n");
+        print_arr(n, attempted);
+        printf("expected:\n");
+        print_arr(n, sorted_arr);
+    }
 
     free(arr);
     free(sorted_arr);
     free(attempted);
-
     return tests_left;
 }
