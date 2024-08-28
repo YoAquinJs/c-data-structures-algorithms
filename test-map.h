@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-bool print_on_fail = false;
+extern bool print_on_fail;
 
 #define invalid -1
 
