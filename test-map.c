@@ -6,6 +6,8 @@
 #include "searching/test-search.h"
 #include "sorting/test-sort.h"
 
+bool PRINT_ON_FAIL = false;
+
 const int CATEGORY_COUNT= 2;
 const Category CATEGORIES[] = {
     searching,
@@ -96,12 +98,13 @@ bool run_test(Test test){
         break;
     }
     
-    if (missing_tests == 0)
+    if (missing_tests == 0){
         printf("passed!\n");
-    else
-        printf("missing tests: %d\nfailed!\n", missing_tests);
+        return true;
+    }
 
-    return missing_tests;
+    printf("missing tests: %d\nfailed!\n", missing_tests);
+    return false;
 }
 
 void run_all_tests() {

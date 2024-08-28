@@ -1,98 +1,87 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include <getopt.h>
+#include <argp.h>
 
 #include "test-map.h"
 
-void run_all_tests();
-void run_category_tests(const char *category);
-void run_individual_test(const char *test_name);
+const char *program_version = "argp_example 1.0";
+static char doc[] = "C test suite for algorithms and data structures";
 
-void usage(char name[], FILE* buff){
-    const char usage_str[] =
-    "usage: %s"
-    "[--all | --category CATEGORY | --test TEST_NAME]"
-    "[--print-on-fail]k\n";
-    fprintf(buff, usage_str, name);
+static char args_doc[] = "";
+
+static struct argp_option options[] = {
+    {"all",             'a', NULL, 0, "Run all tests", 1},
+    {"category",        'c', "CATEGORY", 0, "Run all tests in category", 1},
+    {"test",            't', "TEST_NAME", 0, "Run a specific test", 1},
+    {"print-on-fail",   'p', NULL, 0, "Optional flag to print test output on failure", 2},
+    {0}
+};
+
+struct arguments {
+    bool print_on_fail;
+    bool all;
+    char *category;
+    char *test;
+};
+
+static error_t parse_opt(int key, char *arg, struct argp_state *state) {
+    struct arguments *arguments = state->input;
+
+    switch (key) {
+        case 'a': // --all
+            if (arguments->category || arguments->test) {
+                argp_error(state, "Option --all cannot be used with --category or --test");
+            }
+            arguments->all = 1;
+            break;
+        case 'c': // --category
+            if (arguments->all || arguments->test) {
+                argp_error(state, "Option --category cannot be used with --all or --test");
+            }
+            arguments->category = arg;
+            break;
+        case 't': // --test
+            if (arguments->all || arguments->category) {
+                argp_error(state, "Option --test cannot be used with --all or --category");
+            }
+            arguments->test = arg;
+            break;
+        case 'p': // --print-on-fail
+            arguments->print_on_fail = 1;
+            break;
+        case ARGP_KEY_END:
+            if (!arguments->all && !arguments->category && !arguments->test) {
+                argp_error(state, "One of --all, --category, or --test must be specified");
+            }
+            break;
+        default:
+            return ARGP_ERR_UNKNOWN;
+    }
+    return 0;
 }
 
-bool print_on_fail = false;
+static struct argp argp = {options, parse_opt, args_doc, doc};
 
-int main(int argc, char *argv[]) {
-    if (argc < 2){
-        usage(argv[0], stderr);
-        exit(EXIT_FAILURE);
-    }
+int main(int argc, char **argv) {
+    struct arguments arguments;
 
-    static struct option long_options[] = {
-        {"all", no_argument, NULL, 'a'},
-        {"category", required_argument, NULL, 'c'},
-        {"test", required_argument, NULL, 'i'},
-        {"print-on-fail", no_argument, NULL, 'p'},
-        {"help", no_argument, NULL, 'h'},
-        {0, 0, 0, 0}
-    };
+    arguments.print_on_fail = false;
+    arguments.all = 0;
+    arguments.category = NULL;
+    arguments.test = NULL;
 
-    int opt;
-    while ((opt = getopt_long(argc, argv, "ac:i:ph", long_options, NULL)) != -1) {
-        switch (opt) {
-            case 'a':
-                run_all_tests();
-                break;
-            case 'c':
-                run_category_tests(optarg);
-                break;
-            case 'i':
-                run_individual_test(optarg);
-                break;
-            case 'p':
-                print_on_fail = 1;
-                break;
-            case 'h':
-                usage(argv[0], stdout);
-                exit(EXIT_SUCCESS);
-            default:
-                usage(argv[0], stderr);
-                exit(EXIT_FAILURE);
-        }
-    }
-}
+    argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
-void run_all_tests() {
-    printf("running all tests...\n");
+    PRINT_ON_FAIL = arguments.print_on_fail;
 
-    for (int i=0; i < TEST_COUNT; i++){
-        printf("\n");
-        if (!run_test(TESTS[i]))
-            exit(EXIT_FAILURE);
-    }
-}
+    if (arguments.all)
+        run_all_tests();
 
-void run_category_tests(const char *category_name) {
-    Category category = get_category(category_name);
-    if (category == invalid){
-        printf("invalid category\n");
-        exit(EXIT_FAILURE);
-    }
+    if (arguments.category)
+        run_category_tests(arguments.category);
 
-    printf("running all tests in '%s'...\n", category_name);
-    Test* category_tests = get_category_tests(category);
-    for (int i=0; i < TESTS_BY_CATEGORY_COUNT[category]; i++){
-        printf("\n");
-        if (!run_test(category_tests[i]))
-            exit(EXIT_FAILURE);
-    }
-}
+    if (arguments.test)
+        run_single_test(arguments.test);
 
-void run_individual_test(const char *test_name) {
-    Test test = get_test(test_name);
-    if (test == invalid){
-        printf("invalid test\n");
-        exit(EXIT_FAILURE);
-    }
-
-    printf("running test...\n\n");
-    if (!run_test(test))
-        exit(EXIT_FAILURE);
+    return 0;
 }

@@ -52,5 +52,5 @@ int test_sort(Sort sort, bool ascendant){
     free(arr);
     free(sorted_arr);
     free(attempted);
-    return tests_left;
+    return tests_left+1;
 }
