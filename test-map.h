@@ -11,20 +11,30 @@ typedef enum{
     searching,
     sorting,
 } Category;
+extern const int CATEGORY_COUNT;
+extern const Category CATEGORIES[];
+extern const char* CATEGORIES_NAMES[];
 
 typedef enum{
     invalid_t=-1,
-    _linear_search,
-    _binary_search,
-    _bubble_sort,
-    _exchange_sort,
-    _insertion_sort,
-    _selection_sort,
-    _merge_sort,
+    __linear_search,
+    __binary_search,
+    __bubble_sort,
+    __exchange_sort,
+    __insertion_sort,
+    __selection_sort,
+    __merge_sort,
+    __quick_sort,
 } Test;
+extern const int TEST_COUNT;
+extern const Test TESTS[];
+extern const char* TEST_NAMES[];
 
-Category get_category(char* category);
-Test get_test(char* test);
+extern const int TESTS_BY_CATEGORY_COUNT[];
+extern const Test* TESTS_BY_CATEGORY[];
 
-void run_category(Category category);
-void run_test(Test test);
+Category get_category(const char* category);
+Test get_test(const char* test);
+
+Test* get_category_tests(Category category);
+bool run_test(Test test);

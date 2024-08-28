@@ -1,78 +1,105 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "test-map.h"
 #include "searching/test-search.h"
 #include "sorting/test-sort.h"
 
-Category get_category(char* category){
-    if (strncmp(category, "searching", 10) == 0)
-        return searching;
-    if (strncmp(category, "sorting", 8) == 0)
-        return sorting;
-    return invalid;
-}
+const int CATEGORY_COUNT= 2;
+const Category CATEGORIES[] = {
+    searching,
+    sorting,
+};
+const char* CATEGORIES_NAMES[] = {
+    "searching",
+    "sorting",
+};
+const int TESTS_BY_CATEGORY_COUNT[] = {2, 6};
 
-Test get_test(char* test){
-    if (strncmp(test, "linear-search", 14) == 0)
-        return _linear_search;
-    if (strncmp(test, "binary-search", 14) == 0)
-        return _binary_search;
-    if (strncmp(test, "bubble-sort", 12) == 0)
-        return _bubble_sort;
-    if (strncmp(test, "exchange-sort", 14) == 0)
-        return _exchange_sort;
-    if (strncmp(test, "insertion-sort", 15) == 0)
-        return _insertion_sort;
-    if (strncmp(test, "selection-sort", 15) == 0)
-        return _selection_sort;
-    if (strncmp(test, "merge-sort", 11) == 0)
-        return _merge_sort;
-    return invalid;
-}
+const int TEST_COUNT = 8;
+const Test TESTS[] = {
+    // Searching
+    __linear_search,
+    __binary_search,
 
-void run_category(Category category){
-    switch (category){
-    case searching:
-        run_test(_linear_search);
-        run_test(_binary_search);
-        break;
-    case sorting:
-        run_test(_bubble_sort);
-        run_test(_exchange_sort);
-        run_test(_insertion_sort);
-        run_test(_selection_sort);
-        run_test(_merge_sort);
-        break;
-    case invalid:
-    default:
-        break;
+    // Sorting
+    __bubble_sort,
+    __exchange_sort,
+    __insertion_sort,
+    __selection_sort,
+    __merge_sort,
+    __quick_sort,
+};
+const char* TEST_NAMES[] = {
+    "linear-search",
+    "binary-search",
+    "bubble-sort",
+    "exchange-sort",
+    "insertion-sort",
+    "selection-sort",
+    "merge-sort",
+    "quick-sort",
+};
+
+Category get_category(const char* category){
+    for (int i=0; i < CATEGORY_COUNT; i++){
+        if (strcmp(category, CATEGORIES_NAMES[i]) == 0)
+            return CATEGORIES[i];
     }
+    return invalid;
 }
-void run_test(Test test){
+
+Test get_test(const char* test){
+    for (int i=0; i < TEST_COUNT; i++){
+        if (strcmp(test, TEST_NAMES[i]) == 0)
+            return TESTS[i];
+    }
+    return invalid;
+}
+
+Test* get_category_tests(Category category){
+    return category == 0 ? TESTS : TESTS+TESTS_BY_CATEGORY_COUNT[category-1];
+}
+
+bool run_test(Test test){
+    printf("running '%s'\n", TEST_NAMES[test]);
+
+    bool passed;
     switch (test) {
-    case _linear_search:
-        test_search(linear_search); // in search/test-search.h
+    case __linear_search:
+        passed = 0 == test_search(linear_search);
         break;
-    case _binary_search:
-        test_search(binary_search);
+    case __binary_search:
+        passed = 0 == test_search(binary_search);
         break;
-    case _bubble_sort:
-        test_sort(bubble_sort, true);
+    case __bubble_sort:
+        passed = 0 == test_sort(bubble_sort, true);
         break;
-    case _exchange_sort:
-        test_sort(exchange_sort, true);
+    case __exchange_sort:
+        passed = 0 == test_sort(exchange_sort, true);
         break;
-    case _insertion_sort:
-        test_sort(insertion_sort, true);
+    case __insertion_sort:
+        passed = 0 == test_sort(insertion_sort, true);
         break;
-    case _selection_sort:
-        test_sort(selection_sort, true);
+    case __selection_sort:
+        passed = 0 == test_sort(selection_sort, true);
         break;
-    case _merge_sort:
-        // test_sort(merge_sort);
+    case __merge_sort:
+        passed = 0 == test_sort(merge_sort, true);
+        break;
+    case __quick_sort:
+        passed = 0 == test_sort(quick_sort, true);
         break;
     case invalid:
     default:
         break;
     }
+    
+    if (passed)
+        printf("passed!\n");
+    else
+        printf("failed!\n");
+
+    return passed;
 }

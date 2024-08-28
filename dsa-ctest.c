@@ -11,8 +11,8 @@ void run_individual_test(const char *test_name);
 
 void usage(char name[], FILE* buff){
     const char usage_str[] =
-    "Usage: %s"
-    "[--all | --category CATEGORY | --single TEST_NAME]"
+    "usage: %s"
+    "[--all | --category CATEGORY | --test TEST_NAME]"
     "[--print-on-fail]k\n";
     fprintf(buff, usage_str, name);
 }
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
     static struct option long_options[] = {
         {"all", no_argument, NULL, 'a'},
         {"category", required_argument, NULL, 'c'},
-        {"individual", required_argument, NULL, 'i'},
+        {"test", required_argument, NULL, 'i'},
         {"print-on-fail", no_argument, NULL, 'p'},
         {"help", no_argument, NULL, 'h'},
         {0, 0, 0, 0}
@@ -60,13 +60,39 @@ int main(int argc, char *argv[]) {
 }
 
 void run_all_tests() {
-    printf("Running all tests...\n");
+    printf("running all tests...\n");
+
+    for (int i=0; i < TEST_COUNT; i++){
+        printf("\n");
+        if (!run_test(TESTS[i]))
+            exit(EXIT_FAILURE);
+    }
 }
 
-void run_category_tests(const char *category) {
-    printf("Running tests for category: %s\n", category);
+void run_category_tests(const char *category_name) {
+    Category category = get_category(category_name);
+    if (category == invalid){
+        printf("invalid category\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("running all tests in '%s'...\n", category_name);
+    Test* category_tests = get_category_tests(category);
+    for (int i=0; i < TESTS_BY_CATEGORY_COUNT[category]; i++){
+        printf("\n");
+        if (!run_test(category_tests[i]))
+            exit(EXIT_FAILURE);
+    }
 }
 
 void run_individual_test(const char *test_name) {
-    printf("Running individual test: %s\n", test_name);
+    Test test = get_test(test_name);
+    if (test == invalid){
+        printf("invalid test\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("running test...\n\n");
+    if (!run_test(test))
+        exit(EXIT_FAILURE);
 }
