@@ -21,6 +21,6 @@ $(OUTPUT): $(OBJ_FILES)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ_FILES)
+	@rm -f $(OBJ_FILES)
 
 .PHONY: all clean

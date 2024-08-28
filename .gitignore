@@ -1,8 +1,15 @@
 .vscode/
 class/
 
+*.o
+*.a
+*.so
 *.exe
+*.out
+
 main
+dsa-ctest
+
 core.*
 vgcore.*
 
