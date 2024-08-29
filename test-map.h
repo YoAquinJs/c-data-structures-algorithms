@@ -25,6 +25,7 @@ typedef enum{
     __selection_sort,
     __merge_sort,
     __quick_sort,
+    __recursive_insertion_sort,
 } Test;
 extern const int TEST_COUNT;
 extern const Test TESTS[];

@@ -19,7 +19,7 @@ const char* CATEGORIES_NAMES[] = {
 };
 const int TESTS_BY_CATEGORY_COUNT[] = {2, 6};
 
-const int TEST_COUNT = 8;
+const int TEST_COUNT = 9;
 const Test TESTS[] = {
     // Searching
     __linear_search,
@@ -32,6 +32,9 @@ const Test TESTS[] = {
     __selection_sort,
     __merge_sort,
     __quick_sort,
+
+    // Not ran in any group
+    __recursive_insertion_sort,
 };
 const char* TEST_NAMES[] = {
     "linear-search",
@@ -42,6 +45,7 @@ const char* TEST_NAMES[] = {
     "selection-sort",
     "merge-sort",
     "quick-sort",
+    "recursive-insertion-sort",
 };
 
 Category get_category(const char* category){
@@ -83,6 +87,9 @@ bool run_test(Test test){
         break;
     case __insertion_sort:
         missing_tests = test_sort(insertion_sort, true);
+        break;
+    case __recursive_insertion_sort:
+        missing_tests = test_sort(recursive_insertion_sort, true);
         break;
     case __selection_sort:
         missing_tests = test_sort(selection_sort, true);

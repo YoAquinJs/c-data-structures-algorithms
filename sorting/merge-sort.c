@@ -2,36 +2,37 @@
 
 #include "test-sort.h"
 
-void merge(int* arr, int* buff, int p, int q, int r){
-    int _p, _r, k;
-    for (_p=p; _p <= q; _p++)
-        buff[_p] = arr[_p];
-    for (_r=q+1; _r <= r; _r++)
-        buff[_r] = arr[_r];
+void merge(int* arr, int* buff, int left, int mid, int rigth){
+    int _left, _rigth, arr_ptr;
 
-    k = p;
-    _p = p;
-    _r = q+1;
+    //copy left and rigth to buff
+    for (_left=left; _left <= mid; _left++)
+        buff[_left] = arr[_left];
+    for (_rigth=mid+1; _rigth <= rigth; _rigth++)
+        buff[_rigth] = arr[_rigth];
 
-    while(_p <= q && _r <= r)
-        arr[k++] = buff[_p] < buff[_r] ? buff[_p++] : buff[_r++];
+    arr_ptr = left;
+    _left = left;
+    _rigth = mid+1;
 
-    while(_p <= q)
-        arr[k++] = buff[_p++];
-
-    while(_r <= q)
-        arr[k++] = buff[_r++];
+    //merge left and rigth
+    while(_left <= mid && _rigth <= rigth)
+        arr[arr_ptr++] = buff[_left] < buff[_rigth] ? buff[_left++] : buff[_rigth++];
+    while(_left <= mid)
+        arr[arr_ptr++] = buff[_left++];
+    while(_rigth <= mid)
+        arr[arr_ptr++] = buff[_rigth++];
 }
 
-void _merge_sort(int* arr, int* buff, int p, int r){
-    if (p >= r)
+void _merge_sort(int* arr, int* buff, int left, int rigth){
+    if (left >= rigth)
         return;
 
-    int q = p + (r-p)/2;
-    _merge_sort(arr, buff, p, q);
-    _merge_sort(arr, buff, q+1, r);
+    int mid = left + (rigth-left)/2;
+    _merge_sort(arr, buff, left, mid);
+    _merge_sort(arr, buff, mid+1, rigth);
 
-    merge(arr, buff, p, q, r);
+    merge(arr, buff, left, mid, rigth);
 }
 
 void merge_sort(int n, int* arr){

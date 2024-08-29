@@ -12,11 +12,9 @@ void selection_sort(int n, int* arr){
                 min = j;
         }
 
-        // swap
         tmp = arr[min];
         arr[min] = arr[i];
         arr[i] = tmp;
-
     }
 }
 
@@ -32,10 +30,8 @@ void selection_sort_desc(int n, int* arr){
                 max = j;
         }
 
-        // swap
         tmp = arr[max];
         arr[max] = arr[i];
         arr[i] = tmp;
-
     }
 }
