@@ -41,3 +41,5 @@ void bubble_sort_desc(int n, int* arr){
             break;
     }
 }
+
+void test_bubble_sort() { test_sort(bubble_sort, true); }

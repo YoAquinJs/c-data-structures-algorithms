@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "test-map.h"
+#include "utils/utils.h"
 #include "searching/test-search.h"
 #include "sorting/test-sort.h"
 
@@ -71,39 +72,41 @@ const Test* get_category_tests(Category category){
 bool run_test(Test test){
     printf("running '%s'\n", TEST_NAMES[test]);
 
-    int missing_tests;
+    int (*test_to_run)(void) = NULL;
     switch (test) {
     case __linear_search:
-        missing_tests = test_search(linear_search);
+        test_to_run = test_linear_search;
         break;
     case __binary_search:
-        missing_tests = test_search(binary_search);
+        test_to_run = test_binary_search;
         break;
     case __bubble_sort:
-        missing_tests = test_sort(bubble_sort, true);
+        test_to_run = test_bubble_sort;
         break;
     case __exchange_sort:
-        missing_tests = test_sort(exchange_sort, true);
+        test_to_run = test_exchange_sort;
         break;
     case __insertion_sort:
-        missing_tests = test_sort(insertion_sort, true);
+        test_to_run = test_insertion_sort;
         break;
     case __recursive_insertion_sort:
-        missing_tests = test_sort(recursive_insertion_sort, true);
+        test_to_run = test_recursive_insertion_sort;
         break;
     case __selection_sort:
-        missing_tests = test_sort(selection_sort, true);
+        test_to_run = test_selection_sort;
         break;
     case __merge_sort:
-        missing_tests = test_sort(merge_sort, true);
+        test_to_run = test_merge_sort;
         break;
     case __quick_sort:
-        missing_tests = test_sort(quick_sort, true);
+        test_to_run = test_quick_sort;
         break;
     case invalid:
     default:
         break;
     }
+
+    int missing_tests = benchmark_test(test_to_run);
     
     if (missing_tests == 0){
         printf("passed!\n");

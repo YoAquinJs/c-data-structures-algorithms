@@ -31,3 +31,5 @@ void exchange_sort_desc(int n, int* arr){
         }
     }
 }
+
+void test_exchange_sort() { test_sort(exchange_sort, true); }

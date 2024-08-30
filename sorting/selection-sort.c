@@ -35,3 +35,5 @@ void selection_sort_desc(int n, int* arr){
         arr[i] = tmp;
     }
 }
+
+void test_selection_sort() { test_sort(selection_sort, true); }

@@ -45,3 +45,6 @@ void recursive_insertion_sort(int n, int* arr){
     }
     arr[j+1] = key;
 }
+
+void test_insertion_sort() { test_sort(insertion_sort, true); }
+void test_recursive_insertion_sort() { test_sort(recursive_insertion_sort, true); }

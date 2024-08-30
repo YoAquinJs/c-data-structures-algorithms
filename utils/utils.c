@@ -164,3 +164,16 @@ int* generate_test_sizes(int count, int max){
 
     return tests;
 }
+
+int benchmark_test(int (*func)(void)) {
+    clock_t start, end;
+    double cpu_time_used;
+
+    start = clock();
+    int missing_tests = func();
+    end = clock();
+
+    cpu_time_used = ((double)(end - start))*1000 / CLOCKS_PER_SEC;
+    printf("Time taken: %f ms\n", cpu_time_used);
+    return missing_tests;
+}

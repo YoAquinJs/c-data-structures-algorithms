@@ -18,3 +18,5 @@ int* sorted_arr(int n, bool ascendant, int first);
 bool is_sorted(int n, int* original_arr, int* arr, bool ascendant);
 
 int* generate_test_sizes(int count, int max);
+
+int benchmark_test(int (*func)(void));

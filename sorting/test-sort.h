@@ -4,10 +4,10 @@
 typedef void (Sort)(int, int*);
 int test_sort(Sort sort, bool ascendant);
 
-void selection_sort(int n, int* arr);
-void insertion_sort(int n, int *arr);
-void recursive_insertion_sort(int n, int *arr);
-void exchange_sort(int n, int* arr);
-void bubble_sort(int n, int* arr);
-void merge_sort(int n, int* arr);
-void quick_sort(int n, int* arr);
+void test_selection_sort();
+void test_insertion_sort();
+void test_recursive_insertion_sort();
+void test_exchange_sort();
+void test_bubble_sort();
+void test_merge_sort();
+void test_quick_sort();
