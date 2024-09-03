@@ -49,7 +49,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
             break;
         case ARGP_KEY_END:
             if (!args->all && !args->category && !args->test) {
-                argp_error(state, "One of --all, --category, or --test must be specified");
+                argp_error(state, "one of --all, --category, or --test must be specified");
             }
             break;
         default:

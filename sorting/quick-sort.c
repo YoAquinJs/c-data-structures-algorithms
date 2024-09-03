@@ -34,4 +34,4 @@ void quick_sort(int n, int* arr){
     _quick_sort(arr, 0, n-1);
 }
 
-void test_quick_sort() { test_sort(quick_sort, true); }
+int test_quick_sort() { return test_sort(quick_sort, true); }

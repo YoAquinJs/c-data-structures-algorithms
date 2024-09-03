@@ -8,4 +8,4 @@ int linear_search(int n, int* arr, int elem){
     return -1;
 }
 
-void test_linear_search() { test_search(linear_search); }
+int test_linear_search() { return test_search(linear_search); }

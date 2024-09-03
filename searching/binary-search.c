@@ -40,4 +40,4 @@ int recursive_bsearch(int n, int* arr, int key){
     return _recursive_bsearch(arr, key, 0, n-1);
 }
 
-void test_binary_search() { test_search(binary_search); }
+int test_binary_search() { return test_search(binary_search); }

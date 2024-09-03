@@ -41,4 +41,4 @@ void merge_sort(int n, int* arr){
     free(buff);
 }
 
-void test_merge_sort() { test_sort(merge_sort, true); }
+int test_merge_sort() { return test_sort(merge_sort, true); }

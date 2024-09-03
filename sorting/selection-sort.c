@@ -36,4 +36,4 @@ void selection_sort_desc(int n, int* arr){
     }
 }
 
-void test_selection_sort() { test_sort(selection_sort, true); }
+int test_selection_sort() { return test_sort(selection_sort, true); }
