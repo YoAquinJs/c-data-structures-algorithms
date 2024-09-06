@@ -1,5 +1,5 @@
 .vscode/
-class/
+build/
 
 *.o
 *.a
@@ -7,9 +7,8 @@ class/
 *.exe
 *.out
 
-main
-dsa-ctest
-
 core.*
 vgcore.*
+
+*.swp
 

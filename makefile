@@ -1,26 +1,56 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
+DSA = dsa-ctest
+
+# directories
+
 SRC_DIR = .
+UTILS_DIR = utils
+BUILD_DIR = build
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c) \
-            $(wildcard searching/*.c) \
-            $(wildcard sorting/*.c) \
-            $(wildcard utils/*.c)
+BOOK_PROBLEMS_DIR = book-problems
 
-OBJ_FILES = $(SRC_FILES:.c=.o)
+#DSA-ctest suite category dirs
 
-OUTPUT = dsa-ctest
+SEARCHING_DIR = searching
+SORTING_DIR = sorting
 
-all: $(OUTPUT)
+# files and obj files
 
-$(OUTPUT): $(OBJ_FILES)
-	$(CC) $(CFLAGS) -o $@ $(OBJ_FILES)
+UTILS_FILES = $(wildcard $(UTILS_DIR)/*.c)
+UTILS_OBJS = $(UTILS_FILES:.c=.o)
+
+DSA_FILES = $(wildcard $(SRC_DIR)/*.c) \
+			$(wildcard $(SEARCHING_DIR)/*.c) \
+			$(wildcard $(SORTING_DIR)/*.c)
+DSA_OBJS = $(DSA_FILES:.c=.o)
+
+# dsa test suite rules
+
+all: $(DSA)
+
+run: $(DSA)
+	./$(BUILD_DIR)/$(DSA)
+
+$(DSA): $(DSA_OBJS) $(UTILS_OBJS)
+	$(CC) $(CFLAGS) $(DSA_OBJS) $(UTILS_OBJS) -o $(BUILD_DIR)/$@
+
+# book problems rules
+
+%: $(BOOK_PROBLEMS_DIR)/%.c $(UTILS_OBJS)
+	$(CC) $(CFLAGS) $< $(UTILS_OBJS) -o $(BUILD_DIR)/$@
+
+# general rules
+
+$(BUILD_DIR):
+	@mkdir -p $(BUILD_DIR)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJ_FILES)
+	@rm -f $(DSA_OBJS) $(UTILS_OBJS)
 
 .PHONY: all clean
+

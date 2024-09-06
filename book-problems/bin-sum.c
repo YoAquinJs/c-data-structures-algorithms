@@ -1,3 +1,9 @@
+/*
+implementation for excersice 2,1-5
+
+make binsum
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -78,12 +84,12 @@ void bset_setn(Bitset* bitset, size_t n, bool bit){
 }
 
 char* str_bset(Bitset* bitset){
-    int p=0;
+    size_t p=0;
     char* str = malloc(bitset->len*sizeof(char) + 1);
     bitblock ptr;
     bitblock max_bit = (bitblock)1 << (bitblock_bits-1);
 
-    for (int i=0; i < bitset->blocks; i++){
+    for (size_t i=0; i < bitset->blocks; i++){
         ptr = 1;
         while(p < bitset->len){
             str[p++] = '0'+((bitset->bits[i] & ptr) > 0 ? 1 : 0);
@@ -105,7 +111,8 @@ Bitset* bin_sum(Bitset* num1, Bitset* num2){
     if (!result)
         return NULL;
 
-    int carry = 0, i;
+    int carry = 0;
+    size_t i;
     for (i=0; i < num1->len; i++){
         carry += bset_getn(num1, i) + bset_getn(num2, i);
         if (carry & 1){
@@ -138,3 +145,4 @@ int main(){
     free(sum_str);
     return 0;
 }
+
