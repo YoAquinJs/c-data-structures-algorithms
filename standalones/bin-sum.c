@@ -2,6 +2,7 @@
 implementation for excersice 2,1-5
 
 make bin-sum
+make run TARGET=bin-sum
 */
 
 #include <stdio.h>

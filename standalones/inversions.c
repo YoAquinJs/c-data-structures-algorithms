@@ -2,6 +2,7 @@
 implementation for excersice 2,1-5
 
 make inversions
+make run TARGET=inversions
 */
 
 #include <stdio.h>
