@@ -1,7 +1,7 @@
 /*
 implementation for excersice 2,1-5
 
-make binsum
+make bin-sum
 */
 
 #include <stdio.h>
