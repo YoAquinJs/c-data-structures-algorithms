@@ -1,8 +1,20 @@
 CC = gcc
+CDEBUG = -g -DDEBUG
+CREALSE = -O2
 CFLAGS = -Wall -Wextra
 
-DSA = dsa-ctest
-TARGET ?= $(DSA)
+DSA_TEST_SUITE = dsa-ctest
+
+TARGET ?= $(DSA_TEST_SUITE)
+RELEASE ?= 0
+ARGS ?=
+
+# debug flags
+ifeq ($(RELEASE), 1)
+	CFLAGS += $(CREALSE)
+else
+	CFLAGS += $(CDEBUG)
+endif
 
 # directories
 
@@ -27,29 +39,38 @@ DSA_FILES = $(wildcard $(SRC_DIR)/*.c) \
 			$(wildcard $(SORTING_DIR)/*.c)
 DSA_OBJS = $(DSA_FILES:.c=.o)
 
-STANDALONE_FILES = $(wildcard $(STANDALONES_DIR)/*)
-STANDALONE_TARGETS := $(notdir $(STANDALONE_FILES:.c=))
+STANDALONE_FILES = $(shell find $(SRC_DIR)/$(STANDALONES_DIR) -name '*.c')
+STANDALONE_SOURCES = $(subst $(SRC_DIR)/$(STANDALONES_DIR)/, , $(STANDALONE_FILES))
+STANDALONE_TARGETS = $(subst .c, , $(STANDALONE_SOURCES))
 
 # execution rules
 
 all: $(TARGET)
 
-run: $(BUILD_DIR)/$(TARGET)
-	./$(BUILD_DIR)/$(TARGET) || true
+run: $(TARGET)
+	@echo "./$(BUILD_DIR)/$(TARGET) $(ARGS) "
+	@./$(BUILD_DIR)/$(TARGET) $(ARGS) || echo "exit with status code $?"
+
+.PHONY: all run
 
 # dsa test suite rules
 
-$(DSA): $(DSA_OBJS) $(UTILS_OBJS) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(DSA_OBJS) $(UTILS_OBJS) -o $(BUILD_DIR)/$@
+$(DSA_TEST_SUITE): $(BUILD_DIR)/$(DSA_TEST_SUITE)
+.PHONY: $(DSA_TEST_SUITE)
 
-# book problems rules
+$(BUILD_DIR)/$(DSA_TEST_SUITE): $(DSA_OBJS) $(UTILS_OBJS) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) $(DSA_OBJS) $(UTILS_OBJS) -o $@
+
+# standalones rules
 
 $(STANDALONES_DIR): $(STANDALONE_TARGETS)
 
-.PHONY: all $(STANDALONES_DIR)
+$(foreach target,$(STANDALONE_TARGETS),\
+	$(eval $(target): $(BUILD_DIR)/$(target)))
 
-%: $(STANDALONES_DIR)/%.c $(UTILS_OBJS) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) $< $(UTILS_OBJS) -o $(BUILD_DIR)/$@
+$(BUILD_DIR)/%: $(STANDALONES_DIR)/%.c $(UTILS_OBJS) | $(BUILD_DIR)
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $< $(UTILS_OBJS) -o $@
 
 # general rules
 
@@ -62,10 +83,7 @@ $(BUILD_DIR):
 clean:
 	@rm -f $(DSA_OBJS) $(UTILS_OBJS)
 
-clean-all:
-	@rm -f $(DSA_OBJS) $(UTILS_OBJS)
+clean-all: clean
 	@rm -rf $(BUILD_DIR)
 
-.PHONY: all clean
-
-.PHONY: all clean-all
+.PHONY: clean clean-all
