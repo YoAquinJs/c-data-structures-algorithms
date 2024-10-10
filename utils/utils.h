@@ -1,22 +1,24 @@
 #pragma once
 
-#define rand_half RAND_MAX/2
+#include <stdbool.h>
 
-void set_rand_seed();
-int get_rand_in_range(int a, int b);
-int get_rand_in_array(int n, int* arr);
+#define rand_half RAND_MAX / 2
 
-int cmp_ascd(const void *a, const void *b);
-int cmp_desc(const void *a, const void *b);
+void SetRandseed();
+int GetRandInRange(int a, int b);
+int GetRandInArray(int n, int* arr);
 
-int* cp_arr(int n, int* arr);
-void print_arr(int n, int* arr);
+int CmpAscd(const void* a, const void* b);
+int CmpDesc(const void* a, const void* b);
 
-int* random_arr(int n);
-int* sorted_arr(int n, bool ascendant, int first);
+int* CpArr(int n, int* arr);
+void PrintArr(int n, int* arr);
 
-bool is_sorted(int n, int* original_arr, int* arr, bool ascendant);
+int* RandomArr(int n);
+int* SortedArr(int n, bool ascendant, int first);
 
-int* generate_test_sizes(int count, int max);
+bool IsSorted(int n, int* originalArr, int* arr, bool ascendant);
 
-int benchmark_test(int (*func)(void));
+int* GenerateTestSizes(int count, int max);
+
+int BenchmarkTest(int (*func)(void));

@@ -1,45 +1,41 @@
 #include "test-sort.h"
 
-void bubble_sort(int n, int* arr){
-    if (n == 0)
-        return;
+void BubbleSort(int n, int* arr) {
+    if (n == 0) return;
 
     int tmp;
     bool sorted;
-    for(int i=0; i<n-1; i++){
+    for (int i = 0; i < n - 1; i++) {
         sorted = true;
-        for (int j=0; j<n-i-1; j++){
-            if (arr[j] <= arr[j+1])
-                continue;
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] <= arr[j + 1]) continue;
             sorted = false;
             tmp = arr[j];
-            arr[j] = arr[j+1];
-            arr[j+1] = tmp;
+            arr[j] = arr[j + 1];
+            arr[j + 1] = tmp;
         }
-        if (sorted)
-            break;
+        if (sorted) break;
     }
 }
 
-void bubble_sort_desc(int n, int* arr){
-    if (n == 0)
-        return;
+void BubbleSortDesc(int n, int* arr) {
+    if (n == 0) return;
 
     int tmp;
     bool sorted;
-    for(int i=0; i<n-1; i++){
+    for (int i = 0; i < n - 1; i++) {
         sorted = true;
-        for (int j=0; j<n-i-1; j++){
-            if (arr[j] >= arr[j+1])
-                continue;
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] >= arr[j + 1]) continue;
             sorted = false;
             tmp = arr[j];
-            arr[j] = arr[j+1];
-            arr[j+1] = tmp;
+            arr[j] = arr[j + 1];
+            arr[j + 1] = tmp;
         }
-        if (sorted)
-            break;
+        if (sorted) break;
     }
 }
 
-int test_bubble_sort() { return test_sort(bubble_sort, true); }
+int TestBubbleSort() {
+    return TestSort(BubbleSort, true);
+}

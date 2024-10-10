@@ -1,50 +1,48 @@
 #include "test-sort.h"
 
-void insertion_sort(int n, int *arr){
-    if (n == 0)
-        return;
+void InsertionSort(int n, int *arr) {
+    if (n == 0) return;
 
     int i, j, key;
-    for (i = 1; i < n; i++){
+    for (i = 1; i < n; i++) {
         key = arr[i];
         j = i - 1;
-        while (j > -1 && arr[j] > key){
-            arr[j+1] = arr[j];
+        while (j > -1 && arr[j] > key) {
+            arr[j + 1] = arr[j];
             j--;
         }
         arr[j + 1] = key;
     }
 }
 
-void insertion_sort_desc(int n, int *arr){
-    if (n == 0)
-        return;
+void InsertionSortDesc(int n, int *arr) {
+    if (n == 0) return;
 
     int i, j, key;
-    for (i = 1; i < n; i++){
+    for (i = 1; i < n; i++) {
         key = arr[i];
         j = i - 1;
-        while (j > -1 && arr[j] < key){
-            arr[j+1] = arr[j];
+        while (j > -1 && arr[j] < key) {
+            arr[j + 1] = arr[j];
             j--;
         }
-        arr[j+1] = key;
+        arr[j + 1] = key;
     }
 }
 
-void recursive_insertion_sort(int n, int* arr){
-    if (n < 1)
-        return;
+void RecursiveInsertionSort(int n, int *arr) {
+    if (n < 1) return;
 
-    recursive_insertion_sort(n-1, arr);
+    RecursiveInsertionSort(n - 1, arr);
 
-    int key = arr[n-1], j = n-2;
-    while (j > -1 && arr[j] > key){
-        arr[j+1] = arr[j];
+    int key = arr[n - 1], j = n - 2;
+    while (j > -1 && arr[j] > key) {
+        arr[j + 1] = arr[j];
         j--;
     }
-    arr[j+1] = key;
+    arr[j + 1] = key;
 }
 
-int test_insertion_sort() { return test_sort(insertion_sort, true); }
-int test_recursive_insertion_sort() { return test_sort(recursive_insertion_sort, true); }
+int TestInsertionSort() {
+    return TestSort(InsertionSort, true);
+}

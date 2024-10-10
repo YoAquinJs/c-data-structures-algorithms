@@ -1,37 +1,36 @@
 #include "test-sort.h"
 
-int partition(int* arr, int left, int rigth){
-    int pivot = arr[rigth];
+int Partition(int* arr, int left, int right) {
+    int pivot = arr[right];
 
-    int i=left-1, j, tmp;
-    for (j=left; j < rigth; j++){
-        if (arr[j] >= pivot)
-            continue;
+    int i = left - 1, j, tmp;
+    for (j = left; j < right; j++) {
+        if (arr[j] >= pivot) continue;
         i++;
         tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
     }
 
-    tmp = arr[i+1];
-    arr[i+1] = arr[rigth];
-    arr[rigth] = tmp;
-    return i+1;
+    tmp = arr[i + 1];
+    arr[i + 1] = arr[right];
+    arr[right] = tmp;
+    return i + 1;
 }
 
-void _quick_sort(int* arr, int left, int rigth){
-    if (left >= rigth)
-        return;
+void QuickSortRecursion(int* arr, int left, int right) {
+    if (left >= right) return;
 
-    int pivot = partition(arr, left, rigth);
-    _quick_sort(arr, left, pivot-1);
-    _quick_sort(arr, pivot+1, rigth);
+    int pivot = Partition(arr, left, right);
+    QuickSortRecursion(arr, left, pivot - 1);
+    QuickSortRecursion(arr, pivot + 1, right);
 }
 
-void quick_sort(int n, int* arr){
-    if (n < 1)
-        return;
-    _quick_sort(arr, 0, n-1);
+void QuickSort(int n, int* arr) {
+    if (n < 1) return;
+    QuickSortRecursion(arr, 0, n - 1);
 }
 
-int test_quick_sort() { return test_sort(quick_sort, true); }
+int TestQuickSort() {
+    return TestSort(QuickSort, true);
+}

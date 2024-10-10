@@ -1,8 +1,8 @@
 #pragma once
 #include <stdbool.h>
 
-typedef int (Search)(int, int*, int);
-int test_search(Search search);
+typedef int(Search)(int, int*, int);
+int TestSearch(Search search);
 
-int test_linear_search();
-int test_binary_search();
+int TestLinearSearch();
+int TestBinarySearch();

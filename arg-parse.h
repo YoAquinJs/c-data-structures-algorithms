@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stdbool.h>
 #include <argp.h>
+#include <stdbool.h>
 
 typedef struct {
     bool all;
@@ -10,8 +10,8 @@ typedef struct {
     bool print_on_fail;
 } Arguments;
 
-Arguments get_default_arguments();
-struct argp argp_conf();
+Arguments GetDefaultArguments();
+struct argp ArgpConf();
 
 extern const char args_doc[];
 extern const char doc[];

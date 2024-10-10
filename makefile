@@ -49,7 +49,7 @@ all: $(TARGET)
 
 run: $(TARGET)
 	@echo "./$(BUILD_DIR)/$(TARGET) $(ARGS) "
-	@./$(BUILD_DIR)/$(TARGET) $(ARGS) || echo "exit with status code $?"
+	@./$(BUILD_DIR)/$(TARGET) $(ARGS) || echo "exit with status code $$?"
 
 .PHONY: all run
 
