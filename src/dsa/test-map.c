@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../utils/utils.h"
 #include "searching/test-search.h"
 #include "sorting/test-sort.h"
-#include "utils/utils.h"
 
 bool PRINT_ON_FAIL = false;
 

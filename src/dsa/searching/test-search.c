@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../../utils/utils.h"
 #include "../test-map.h"
-#include "../utils/utils.h"
 
 #define MAX_ARR_N 1000
 #define TESTS 1000

@@ -1,9 +1,9 @@
-CC = gcc
-CDEBUG = -g -DDEBUG
-CREALSE = -O2
-CFLAGS = -Wall -Wextra
+CC := gcc
+CDEBUG := -g -DDEBUG
+CREALSE := -O2
+CFLAGS := -Wall -Wextra
 
-DSA_TEST_SUITE = dsa-ctest
+DSA_TEST_SUITE := dsa-ctest
 
 TARGET ?= $(DSA_TEST_SUITE)
 RELEASE ?= 0
@@ -18,25 +18,19 @@ endif
 
 # directories
 
-SRC_DIR = .
-UTILS_DIR = utils
-BUILD_DIR = build
+SRC_DIR := src
+UTILS_DIR := utils
+BUILD_DIR := build
 
-STANDALONES_DIR = standalones
-
-# DSA-ctest suite category dirs
-
-SEARCHING_DIR = searching
-SORTING_DIR = sorting
+DSA_DIR := dsa
+STANDALONES_DIR := standalones
 
 # files and obj files
 
-UTILS_FILES = $(wildcard $(UTILS_DIR)/*.c)
+UTILS_FILES = $(shell find $(SRC_DIR)/$(UTILS_DIR) -name '*.c')
 UTILS_OBJS = $(UTILS_FILES:.c=.o)
 
-DSA_FILES = $(wildcard $(SRC_DIR)/*.c) \
-			$(wildcard $(SEARCHING_DIR)/*.c) \
-			$(wildcard $(SORTING_DIR)/*.c)
+DSA_FILES = $(shell find $(SRC_DIR)/$(DSA_DIR) -name '*.c')
 DSA_OBJS = $(DSA_FILES:.c=.o)
 
 STANDALONE_FILES = $(shell find $(SRC_DIR)/$(STANDALONES_DIR) -name '*.c')
@@ -68,8 +62,8 @@ $(STANDALONES_DIR): $(STANDALONE_TARGETS)
 $(foreach target,$(STANDALONE_TARGETS),\
 	$(eval $(target): $(BUILD_DIR)/$(target)))
 
-$(BUILD_DIR)/%: $(STANDALONES_DIR)/%.c $(UTILS_OBJS) | $(BUILD_DIR)
-	mkdir -p $(dir $@)
+$(BUILD_DIR)/%: $(SRC_DIR)/$(STANDALONES_DIR)/%.c $(UTILS_OBJS) | $(BUILD_DIR)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $< $(UTILS_OBJS) -o $@
 
 # general rules
