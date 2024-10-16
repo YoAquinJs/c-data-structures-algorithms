@@ -1,17 +1,19 @@
 CC := gcc
 CDEBUG := -g -DDEBUG
-CREALSE := -O2
+CRELEASE := -O2
 CFLAGS := -Wall -Wextra
 
 DSA_TEST_SUITE := dsa-ctest
 
 TARGET ?= $(DSA_TEST_SUITE)
-RELEASE ?= 0
 ARGS ?=
+
+RELEASE ?= 0
+ABS_INCLUDE ?= 1
 
 # debug flags
 ifeq ($(RELEASE), 1)
-	CFLAGS += $(CREALSE)
+	CFLAGS += $(CRELEASE)
 else
 	CFLAGS += $(CDEBUG)
 endif
@@ -19,6 +21,10 @@ endif
 # directories
 
 SRC_DIR := src
+ifeq ($(ABS_INCLUDE), 1)
+	CFLAGS += -I './$(SRC_DIR)'
+endif
+
 UTILS_DIR := utils
 BUILD_DIR := build
 
@@ -53,7 +59,7 @@ $(DSA_TEST_SUITE): $(BUILD_DIR)/$(DSA_TEST_SUITE)
 .PHONY: $(DSA_TEST_SUITE)
 
 $(BUILD_DIR)/$(DSA_TEST_SUITE): $(DSA_OBJS) $(UTILS_OBJS) | $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(DSA_OBJS) $(UTILS_OBJS) -o $@
+	@$(CC) $(CFLAGS) $(DSA_OBJS) $(UTILS_OBJS) -o $@
 
 # standalones rules
 
@@ -80,4 +86,7 @@ clean:
 clean-all: clean
 	@rm -rf $(BUILD_DIR)
 
-.PHONY: clean clean-all
+src-tree:
+	@tree -a -I '.git|.gitignore|makefile|*.o|$(BUILD_DIR)'
+
+.PHONY: clean clean-all src-tree
