@@ -4,27 +4,39 @@
 #include <stdlib.h>
 #include <string.h>
 
+LinkedListNode* NewLinkedListNode(void* value, size_t size) {
+    LinkedListNode* node = malloc(sizeof(LinkedListNode) + size);
+    if (!node) {
+        return NULL;
+    }
+
+    node->value = ((void*)node) + sizeof(LinkedListNode);
+
+    memcpy(node->value, value, size);
+    return node;
+}
+
 void FreeLinkedListNode(LinkedListNode* node) {
-    free(node->value);
     free(node);
 }
+
 LinkedList NewLinkedList(size_t memb_size) {
     return (LinkedList){0, memb_size, NULL};
 }
 
 void FreeLinkedList(LinkedList* list) {
-    LinkedListNode* buf;
+    LinkedListNode* buffer;
 
     while (list->head) {
-        buf = list->head;
+        buffer = list->head;
         list->head = list->head->next;
-        FreeLinkedListNode(buf);
+        FreeLinkedListNode(buffer);
     }
 }
 
-int LinkedListIndex(LinkedList list, size_t index, void* elem) {
+LinkedListNode* LinkedListIndex(LinkedList list, size_t index) {
     if (index >= list.size) {
-        return 1;
+        return NULL;
     }
 
     LinkedListNode* node = list.head;
@@ -32,52 +44,44 @@ int LinkedListIndex(LinkedList list, size_t index, void* elem) {
         node = node->next;
     }
 
-    elem = node->value;
-    return 0;
+    return node;
 }
 
 int LinkedListRemove(LinkedList* list, size_t index) {
-    if (index >= list->size) {
-        return 1;
-    }
+    LinkedListNode* buffer;
 
-    LinkedListNode* buf;
     if (index == 0) {
-        buf = list->head;
-        list->head = buf->next;
-        FreeLinkedListNode(buf);
+        buffer = list->head;
+        list->head = buffer->next;
+        FreeLinkedListNode(buffer);
 
         list->size--;
         return 0;
     }
 
-    LinkedListNode* node = list->head;
-    while (0 < --index) {
-        node = node->next;
+    LinkedListNode* prev_node;
+    if (index == list->size ||
+        !(prev_node = LinkedListIndex(*list, index - 1))) {
+        return 1;
     }
 
-    buf = node->next;
-    node->next = buf->next;
-    FreeLinkedListNode(buf);
+    buffer = prev_node->next;
+    prev_node->next = buffer->next;
+    FreeLinkedListNode(buffer);
 
     list->size--;
     return 0;
 }
 
 int LinkedListInsert(LinkedList* list, size_t index, void* elem) {
-    if (index > list->size) {
+    LinkedListNode* prev_node;
+    if (index == 0) {
+        prev_node = list->head;
+    } else if (!(prev_node = LinkedListIndex(*list, index - 1))) {
         return 1;
     }
 
-    LinkedListNode* insert_node = malloc(sizeof(LinkedListNode));
-    if (!insert_node) {
-        return 1;
-    }
-    insert_node->value = malloc(list->memb_size);
-    if (!insert_node->value) {
-        return 1;
-    }
-    memcpy(insert_node->value, elem, list->memb_size);
+    LinkedListNode* insert_node = NewLinkedListNode(elem, list->memb_size);
 
     if (index == 0) {
         insert_node->next = list->head;
@@ -87,11 +91,6 @@ int LinkedListInsert(LinkedList* list, size_t index, void* elem) {
         return 0;
     }
 
-    LinkedListNode* prev_node = list->head;
-    while (0 < --index) {
-        prev_node = prev_node->next;
-    }
-
     insert_node->next = prev_node->next;
     prev_node->next = insert_node;
 
@@ -99,11 +98,18 @@ int LinkedListInsert(LinkedList* list, size_t index, void* elem) {
     return 0;
 }
 
-void IterLinkedList(LinkedList list,
-                    void (*Iterator)(size_t index, void* elem)) {
-    LinkedListNode* node = list.head;
-    for (size_t index = 0; index < list.size; index++) {
-        Iterator(index, node->value);
+int IterLinkedList(LinkedList list, size_t start, size_t end,
+                   LinkedListIterator iterator) {
+    LinkedListNode* node;
+    if (end > list.size || start >= end ||
+        !(node = LinkedListIndex(list, start))) {
+        return 1;
+    }
+
+    for (; start < end; start++) {
+        iterator(start, node->value);
         node = node->next;
     }
+
+    return 0;
 }

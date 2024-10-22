@@ -2,11 +2,14 @@
 
 #include <stddef.h>
 
+typedef void (*LinkedListIterator)(size_t index, void* elem);
+
 typedef struct LinkedListNode {
     void* value;
     struct LinkedListNode* next;
 } LinkedListNode;
 
+LinkedListNode* NewLinkedListNode(void* value, size_t size);
 void FreeLinkedListNode(LinkedListNode* node);
 
 typedef struct LinkedList {
@@ -18,8 +21,10 @@ typedef struct LinkedList {
 LinkedList NewLinkedList(size_t memb_size);
 void FreeLinkedList(LinkedList* list);
 
-int LinkedListIndex(LinkedList list, size_t index, void* elem);
+LinkedListNode* LinkedListIndex(LinkedList list, size_t index);
 int LinkedListRemove(LinkedList* list, size_t index);
 int LinkedListInsert(LinkedList* list, size_t index, void* elem);
-void IterLinkedList(LinkedList list,
-                    void (*Iterator)(size_t index, void* elem));
+// iter from start to end (end non inclusive), fail on attempted reverse
+// iteration
+int IterLinkedList(LinkedList list, size_t start, size_t end,
+                   LinkedListIterator iterator);

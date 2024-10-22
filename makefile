@@ -87,6 +87,6 @@ clean-all: clean
 	@rm -rf $(BUILD_DIR)
 
 src-tree:
-	@tree -a -I '.git|.gitignore|makefile|*.o|$(BUILD_DIR)'
+	@tree -a -I '.git|.gitignore|.cache|makefile|*.o|$(BUILD_DIR)'
 
 .PHONY: clean clean-all src-tree
