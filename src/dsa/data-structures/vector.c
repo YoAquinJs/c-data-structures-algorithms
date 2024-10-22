@@ -3,17 +3,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-int CapacityDouble(int current_capacity) {
-    return current_capacity * 2;
+size_t CapacityDouble(size_t capacity) {
+    return capacity == 0 ? 1 : capacity * 2;
 }
 
-int CapacityBinaryCompleteTree(int current_capacity) {
-    return 1 + current_capacity * 2;
+size_t CapacityBinaryCompleteTree(size_t capacity) {
+    return 1 + capacity * 2;
 }
 
+// trust receiver to check buffer nullness
 Vector NewVector(size_t memb_size, size_t size, CapacityIncrease capacity_inc) {
-    // trust receiver to check buffer nullness
-    void* buffer = malloc(memb_size * size);
+    if (size < 1) {
+        size = 1;
+    }
+
+    void* buffer = malloc(size * memb_size);
     return (Vector){buffer, memb_size, 0, size, capacity_inc};
 }
 
@@ -24,9 +28,9 @@ void FreeVector(Vector* vec) {
     vec->size = 0;
 }
 
-int VectorIndex(Vector vec, size_t index, void** elem) {
-    *elem = vec.buffer + (index * vec.memb_size);
-    return index < vec.size ? 0 : 1;
+int VectorIndex(Vector* vec, size_t index, void** elem) {
+    *elem = vec->buffer + (index * vec->memb_size);
+    return index < vec->size ? 0 : 1;
 }
 
 bool VectorCheckOverflow(Vector* vec, size_t new_elems) {
@@ -53,8 +57,8 @@ int VectorRemove(Vector* vec, size_t index) {
     }
 
     void *index_ptr, *next_index_ptr;
-    if (VectorIndex(*vec, index, &index_ptr) == 1 ||
-        VectorIndex(*vec, index + 1, &next_index_ptr) == 1) {
+    if (VectorIndex(vec, index, &index_ptr) == 1 ||
+        VectorIndex(vec, index + 1, &next_index_ptr) == 1) {
         return 1;
     }
 
@@ -72,19 +76,24 @@ int VectorInsert(Vector* vec, void* elem, size_t index) {
     }
 
     void* index_ptr;
-    if (VectorIndex(*vec, index, &index_ptr) == 1) {
+    if (VectorIndex(vec, index, &index_ptr) == 1) {
         memcpy(index_ptr, elem, vec->memb_size);
         vec->size++;
         return 0;
     }
 
     void* next_index_ptr;
-    VectorIndex(*vec, index + 1, &next_index_ptr);
+    VectorIndex(vec, index + 1, &next_index_ptr);
     memcpy(next_index_ptr, index_ptr, vec->memb_size * (vec->size - index));
     memcpy(index_ptr, elem, vec->memb_size);
 
     vec->size++;
     return 0;
+}
+
+void VectorClear(Vector* vec) {
+    vec->size = 0;
+    /*memset(vec->buffer, 0, vec->memb_size * vec->capacity);*/
 }
 
 int VectorAppend(Vector* vec, void* elem) {
