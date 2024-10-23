@@ -1,8 +1,14 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdint.h>
 
 #define rand_half RAND_MAX / 2
+
+// a < b <-> int < 0
+// a > b <-> int > 0
+// a == b <-> int == 0
+typedef int8_t (*Compare)(const void*, const void*);
 
 void SetRandseed();
 int GetRandInRange(int a, int b);
