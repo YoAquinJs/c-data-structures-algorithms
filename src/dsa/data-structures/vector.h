@@ -18,6 +18,7 @@ typedef struct Vector {
     CapacityIncrease capacity_inc;
 } Vector;
 
+// trust receiver to check buffer nullness
 Vector NewVector(size_t memb_size, size_t capacity,
                  CapacityIncrease capacity_inc);
 void FreeVector(Vector* vec);

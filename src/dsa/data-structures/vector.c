@@ -11,7 +11,6 @@ size_t CapacityBinaryCompleteTree(size_t capacity) {
     return 1 + capacity * 2;
 }
 
-// trust receiver to check buffer nullness
 Vector NewVector(size_t memb_size, size_t size, CapacityIncrease capacity_inc) {
     if (size < 1) {
         size = 1;

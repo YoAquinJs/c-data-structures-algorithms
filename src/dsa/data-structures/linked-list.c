@@ -9,8 +9,9 @@ LinkedListNode* NewLinkedListNode(void* value, size_t size) {
     if (!node) {
         return NULL;
     }
+    node->next = NULL;
 
-    node->value = ((void*)node) + sizeof(LinkedListNode);
+    node->value = (void*)(node + sizeof(LinkedListNode));
 
     memcpy(node->value, value, size);
     return node;
@@ -34,12 +35,12 @@ void FreeLinkedList(LinkedList* list) {
     }
 }
 
-LinkedListNode* LinkedListIndex(LinkedList list, size_t index) {
-    if (index >= list.size) {
+LinkedListNode* LinkedListIndex(LinkedList* list, size_t index) {
+    if (index >= list->size) {
         return NULL;
     }
 
-    LinkedListNode* node = list.head;
+    LinkedListNode* node = list->head;
     while (0 < index--) {
         node = node->next;
     }
@@ -61,7 +62,7 @@ int LinkedListRemove(LinkedList* list, size_t index) {
 
     LinkedListNode* prev_node;
     if (index == list->size ||
-        !(prev_node = LinkedListIndex(*list, index - 1))) {
+        !(prev_node = LinkedListIndex(list, index - 1))) {
         return 1;
     }
 
@@ -77,7 +78,7 @@ int LinkedListInsert(LinkedList* list, size_t index, void* elem) {
     LinkedListNode* prev_node;
     if (index == 0) {
         prev_node = list->head;
-    } else if (!(prev_node = LinkedListIndex(*list, index - 1))) {
+    } else if (!(prev_node = LinkedListIndex(list, index - 1))) {
         return 1;
     }
 
@@ -98,10 +99,10 @@ int LinkedListInsert(LinkedList* list, size_t index, void* elem) {
     return 0;
 }
 
-int IterLinkedList(LinkedList list, size_t start, size_t end,
+int IterLinkedList(LinkedList* list, size_t start, size_t end,
                    LinkedListIterator iterator) {
     LinkedListNode* node;
-    if (end > list.size || start >= end ||
+    if (end > list->size || start >= end ||
         !(node = LinkedListIndex(list, start))) {
         return 1;
     }

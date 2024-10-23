@@ -21,10 +21,10 @@ typedef struct LinkedList {
 LinkedList NewLinkedList(size_t memb_size);
 void FreeLinkedList(LinkedList* list);
 
-LinkedListNode* LinkedListIndex(LinkedList list, size_t index);
+LinkedListNode* LinkedListIndex(LinkedList* list, size_t index);
 int LinkedListRemove(LinkedList* list, size_t index);
 int LinkedListInsert(LinkedList* list, size_t index, void* elem);
 // iter from start to end (end non inclusive), fail on attempted reverse
 // iteration
-int IterLinkedList(LinkedList list, size_t start, size_t end,
+int IterLinkedList(LinkedList* list, size_t start, size_t end,
                    LinkedListIterator iterator);
