@@ -45,3 +45,7 @@ void BSTPostorderTraversal(BSTNode* root, BSTIterator iterator);
 // level by lelvel top to bottom
 void BSTLevelTraversal(BSTNode* root, BSTIterator iterator,
                        void (*OnNewLevel)(void));
+
+// travel ancestros from head to node parent
+void BSTAncestorTraversal(BinarySearchTree* bst, void* elem,
+                          BSTIterator iterator);

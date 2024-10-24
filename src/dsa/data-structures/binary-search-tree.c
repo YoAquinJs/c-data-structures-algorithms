@@ -264,6 +264,28 @@ void BSTLevelTraversal(BSTNode* root, BSTIterator iterator,
     FreeVector(&next_level);
 }
 
+void BSTAncestorTraversal(BinarySearchTree* bst, void* elem,
+                          BSTIterator iterator) {
+    BSTNode* parent;
+    if (BSTSearchParent(bst, elem, &parent, NULL) != 0) {
+        return;
+    }
+
+    BSTNode* ancestor = bst->head;
+    while (ancestor != parent) {
+        iterator(ancestor);
+
+        int8_t cmp = bst->compare(elem, ancestor->value);
+        if (cmp < 0) {
+            ancestor = ancestor->left;
+        } else if (cmp > 0) {
+            ancestor = ancestor->right;
+        }
+    }
+
+    iterator(parent);
+}
+
 BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare) {
     if (!node) {
         return NULL;
