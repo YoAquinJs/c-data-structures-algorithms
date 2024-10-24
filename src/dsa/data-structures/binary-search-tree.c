@@ -109,29 +109,30 @@ int BSTInsert(BinarySearchTree* bst, void* elem) {
         return bst->head ? 0 : 1;
     }
 
-    BSTNode* node = bst->head;
+    BSTNode *node = bst->head, **insert_ref;
 
-    while (node) {
+    while (true) {
         int8_t cmp = bst->compare(elem, node->value);
 
         if (cmp < 0) {
             if (!node->left) {
-                node->left = NewBSTNode(elem, bst->memb_size);
-                return node->left ? 0 : 1;
+                insert_ref = &node->left;
+                break;
             }
             node = node->left;
         } else if (cmp > 0) {
             if (!node->right) {
-                node->right = NewBSTNode(elem, bst->memb_size);
-                return node->right ? 0 : 1;
+                insert_ref = &node->right;
+                break;
             }
             node = node->right;
         } else {
-            break;
+            return 1;
         }
     }
 
-    return 1;
+    *insert_ref = NewBSTNode(elem, bst->memb_size);
+    return *insert_ref ? 0 : 1;
 }
 
 BSTNode* RecursiveRemove(BSTNode* parent, void* elem, size_t memb_size,
@@ -282,23 +283,27 @@ BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare) {
 
 int RecursiveInsert(BSTNode* node, void* elem, BinarySearchTree* bst) {
     int8_t cmp = bst->compare(elem, node->value);
+    BSTNode** insert_ref = NULL;
 
     if (cmp < 0) {
         if (node->left) {
             return RecursiveInsert(node->left, elem, bst);
         }
-        node->left = NewBSTNode(elem, bst->memb_size);
-        return node->left ? 0 : 1;
+        insert_ref = &node->left;
     }
     if (cmp > 0) {
         if (node->right) {
             return RecursiveInsert(node->right, elem, bst);
         }
-        node->right = NewBSTNode(elem, bst->memb_size);
-        return node->right ? 0 : 1;
+        insert_ref = &node->right;
     }
 
-    return 1;
+    if (!insert_ref) {
+        return 1;
+    }
+
+    *insert_ref = NewBSTNode(elem, bst->memb_size);
+    return *insert_ref ? 0 : 1;
 }
 
 BSTNode* RecursiveRemove(BSTNode* node, void* elem, size_t memb_size,
