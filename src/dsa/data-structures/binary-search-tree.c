@@ -1,6 +1,7 @@
 #include "binary-search-tree.h"
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,7 +26,7 @@ void FreeBSTNode(BSTNode* node) {
 }
 
 BinarySearchTree NewBinarySearchTree(size_t memb_size, Compare compare) {
-    return (BinarySearchTree){0, memb_size, compare, NULL};
+    return (BinarySearchTree){memb_size, compare, NULL};
 }
 
 void FreeBinarySearchTree(BinarySearchTree* bst) {
@@ -33,10 +34,68 @@ void FreeBinarySearchTree(BinarySearchTree* bst) {
     bst->head = NULL;
 }
 
-BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare);
+BSTNode* BSTRecursiveSearch(BSTNode* node, void* elem, Compare compare);
 
 BSTNode* BSTSearch(BinarySearchTree* bst, void* elem) {
-    return RecursiveSearch(bst->head, elem, bst->compare);
+    BSTNode* node = bst->head;
+
+    while (node) {
+        int8_t cmp = bst->compare(elem, node->value);
+
+        if (cmp == 0) {
+            return node;
+        }
+
+        node = cmp > 0 ? node->right : node->left;
+    }
+
+    return NULL;
+}
+
+int BSTSearchParent(BinarySearchTree* bst, void* elem, BSTNode** parent,
+                    BSTNode*** parent_node_ref) {
+    BSTNode* node = bst->head;
+    if (bst->compare(node->value, elem) == 0) {
+        return 2;
+    }
+
+    while (true) {
+        int8_t cmp = bst->compare(elem, node->value);
+
+        if (cmp < 0) {
+            if (!node->left) {
+                return 1;
+            }
+            cmp = bst->compare(node->left->value, elem);
+            if (cmp == 0) {
+                *parent = node;
+                *parent_node_ref = &node->left;
+                break;
+            }
+            if (cmp > 1) {
+                return 1;
+            }
+
+            node = node->left;
+        } else {
+            if (!node->right) {
+                return 1;
+            }
+            cmp = bst->compare(node->right->value, elem);
+            if (cmp == 0) {
+                *parent = node;
+                *parent_node_ref = &node->right;
+                break;
+            }
+            if (cmp < 1) {
+                return 1;
+            }
+
+            node = node->right;
+        }
+    }
+
+    return 0;
 }
 
 int RecursiveInsert(BSTNode* node, void* elem, BinarySearchTree* bst);
@@ -50,10 +109,33 @@ int BSTInsert(BinarySearchTree* bst, void* elem) {
     return bst->head ? 0 : 1;
 }
 
-int RecursiveRemove(BSTNode* node, void* elem, Compare compare);
+int RecursiveRemove(BSTNode* parent, void* elem, Compare compare);
 
 int BSTRemove(BinarySearchTree* bst, void* elem) {
-    return RecursiveRemove(bst->head, elem, bst->compare);
+    BSTNode *parent, **parent_node_ref;
+    int search_st = BSTSearchParent(bst, elem, &parent, &parent_node_ref);
+
+    if (search_st == 1) {
+        return 1;
+    }
+
+    if (search_st == 2) {
+        parent_node_ref = &bst->head;
+    }
+    BSTNode* node = *parent_node_ref;
+
+    if (!node->left) {
+        *parent_node_ref = node->right;
+    } else if (!node->right) {
+        *parent_node_ref = node->left;
+    } else {
+        BSTNode* successor = BSTMin(node->right);
+        successor->left = node->left;
+        *parent_node_ref = successor;
+    }
+
+    FreeBSTNode(node);
+    return 0;
 }
 
 BSTNode* BSTMin(BSTNode* root) {
@@ -146,7 +228,7 @@ void BSTLevelTraversal(BSTNode* root, BSTIterator iterator) {
     }
 }
 
-BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare) {
+BSTNode* BSTRecursiveSearch(BSTNode* node, void* elem, Compare compare) {
     if (!node) {
         return NULL;
     }
@@ -154,10 +236,10 @@ BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare) {
     int8_t cmp = compare(elem, node->value);
 
     if (cmp < 0) {
-        return RecursiveSearch(node->left, elem, compare);
+        return BSTRecursiveSearch(node->left, elem, compare);
     }
     if (cmp > 0) {
-        return RecursiveSearch(node->right, elem, compare);
+        return BSTRecursiveSearch(node->right, elem, compare);
     }
 
     return node;
