@@ -43,7 +43,7 @@ void FreeBinarySearchTree(BinarySearchTree* bst) {
     bst->head = NULL;
 }
 
-BSTNode* BSTRecursiveSearch(BSTNode* node, void* elem, Compare compare);
+BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare);
 
 BSTNode* BSTSearch(BinarySearchTree* bst, void* elem) {
     BSTNode* node = bst->head;
@@ -66,6 +66,7 @@ int BSTSearchParent(BinarySearchTree* bst, void* elem, BSTNode** parent,
     BSTNode* node = bst->head;
     int8_t cmp = bst->compare(elem, node->value);
     if (cmp == 0) {
+        if (node_ptr_ref) *node_ptr_ref = &bst->head;
         return 2;
     }
 
@@ -103,12 +104,34 @@ int BSTSearchParent(BinarySearchTree* bst, void* elem, BSTNode** parent,
 int RecursiveInsert(BSTNode* node, void* elem, BinarySearchTree* bst);
 
 int BSTInsert(BinarySearchTree* bst, void* elem) {
-    if (bst->head) {
-        return RecursiveInsert(bst->head, elem, bst);
+    if (!bst->head) {
+        bst->head = NewBSTNode(elem, bst->memb_size);
+        return bst->head ? 0 : 1;
     }
 
-    bst->head = NewBSTNode(elem, bst->memb_size);
-    return bst->head ? 0 : 1;
+    BSTNode* node = bst->head;
+
+    while (node) {
+        int8_t cmp = bst->compare(elem, node->value);
+
+        if (cmp < 0) {
+            if (!node->left) {
+                node->left = NewBSTNode(elem, bst->memb_size);
+                return node->left ? 0 : 1;
+            }
+            node = node->left;
+        } else if (cmp > 0) {
+            if (!node->right) {
+                node->right = NewBSTNode(elem, bst->memb_size);
+                return node->right ? 0 : 1;
+            }
+            node = node->right;
+        } else {
+            break;
+        }
+    }
+
+    return 1;
 }
 
 BSTNode* RecursiveRemove(BSTNode* parent, void* elem, size_t memb_size,
@@ -122,9 +145,6 @@ int BSTRemove(BinarySearchTree* bst, void* elem) {
         return 1;
     }
 
-    if (search_st == 2) {
-        node_ptr_ref = &bst->head;
-    }
     BSTNode* node = *node_ptr_ref;
 
     if (!node->left) {
@@ -243,7 +263,7 @@ void BSTLevelTraversal(BSTNode* root, BSTIterator iterator,
     FreeVector(&next_level);
 }
 
-BSTNode* BSTRecursiveSearch(BSTNode* node, void* elem, Compare compare) {
+BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare) {
     if (!node) {
         return NULL;
     }
@@ -251,10 +271,10 @@ BSTNode* BSTRecursiveSearch(BSTNode* node, void* elem, Compare compare) {
     int8_t cmp = compare(elem, node->value);
 
     if (cmp < 0) {
-        return BSTRecursiveSearch(node->left, elem, compare);
+        return RecursiveSearch(node->left, elem, compare);
     }
     if (cmp > 0) {
-        return BSTRecursiveSearch(node->right, elem, compare);
+        return RecursiveSearch(node->right, elem, compare);
     }
 
     return node;
