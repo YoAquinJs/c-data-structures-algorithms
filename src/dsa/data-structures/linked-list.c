@@ -11,7 +11,7 @@ LinkedListNode* NewLinkedListNode(void* value, size_t size) {
     }
     node->next = NULL;
 
-    node->value = (void*)(node + sizeof(LinkedListNode));
+    node->value = (void*)node + sizeof(LinkedListNode);
 
     memcpy(node->value, value, size);
     return node;

@@ -29,7 +29,7 @@ BSTNode* BSTSearch(BinarySearchTree* bst, void* elem);
 // return 0 if valid, 1 if not found and 2 if elem is head
 // returns parent and pointer to parents left or right pointer
 int BSTSearchParent(BinarySearchTree* bst, void* elem, BSTNode** parent,
-                    BSTNode*** parent_node_ref);
+                    BSTNode*** node_ptr_ref);
 int BSTInsert(BinarySearchTree* bst, void* elem);
 int BSTRemove(BinarySearchTree* bst, void* elem);
 
@@ -43,4 +43,5 @@ void BSTPreorderTraversal(BSTNode* root, BSTIterator iterator);
 // nodes then root
 void BSTPostorderTraversal(BSTNode* root, BSTIterator iterator);
 // level by lelvel top to bottom
-void BSTLevelTraversal(BSTNode* root, BSTIterator iterator);
+void BSTLevelTraversal(BSTNode* root, BSTIterator iterator,
+                       void (*OnNewLevel)(void));
