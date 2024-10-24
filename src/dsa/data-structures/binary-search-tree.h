@@ -25,6 +25,9 @@ typedef struct BinarySearchTree {
 BinarySearchTree NewBinarySearchTree(size_t memb_size, Compare compare);
 void FreeBinarySearchTree(BinarySearchTree* bst);
 
+int BSTHeight(BinarySearchTree* bst, void* elem);
+int BSTDepth(BinarySearchTree* bst, void* elem);
+
 BSTNode* BSTSearch(BinarySearchTree* bst, void* elem);
 // return 0 if valid, 1 if not found and 2 if elem is head
 // returns parent and pointer to parents left or right pointer

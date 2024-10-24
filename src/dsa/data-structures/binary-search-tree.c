@@ -29,6 +29,7 @@ void FreeBSTNode(BSTNode* node) {
 BinarySearchTree NewBinarySearchTree(size_t memb_size, Compare compare) {
     return (BinarySearchTree){memb_size, compare, NULL};
 }
+
 void FreeBinarySearchTreeRecursive(BSTNode* root) {
     if (!root) {
         return;
@@ -41,6 +42,33 @@ void FreeBinarySearchTreeRecursive(BSTNode* root) {
 void FreeBinarySearchTree(BinarySearchTree* bst) {
     FreeBinarySearchTreeRecursive(bst->head);
     bst->head = NULL;
+}
+
+int BSTHeightRecursive(BSTNode* node) {
+    if (!node) {
+        return 0;
+    }
+
+    int left_height = BSTHeightRecursive(node->left);
+    int right_height = BSTHeightRecursive(node->right);
+    return 1 + (left_height > right_height ? left_height : right_height);
+}
+
+int BSTHeight(BinarySearchTree* bst, void* elem) {
+    BSTNode* node = BSTSearch(bst, elem);
+    return BSTHeightRecursive(node) - 1;
+}
+
+static int depth;
+void inc_depth(void* elem) {
+    (void)elem;
+    depth++;
+}
+
+int BSTDepth(BinarySearchTree* bst, void* elem) {
+    depth = 0;
+    BSTAncestorTraversal(bst, elem, inc_depth);
+    return depth;
 }
 
 BSTNode* RecursiveSearch(BSTNode* node, void* elem, Compare compare);
@@ -249,13 +277,13 @@ void BSTLevelTraversal(BSTNode* root, BSTIterator iterator,
             }
         }
 
-        vec_buf = curr_level;
-        curr_level = next_level;
-        next_level = vec_buf;
-
         if (OnNewLevel && next_level.size > 0) {
             OnNewLevel();
         }
+
+        vec_buf = curr_level;
+        curr_level = next_level;
+        next_level = vec_buf;
 
         VectorClear(&next_level);
     }
