@@ -1,5 +1,6 @@
 #include "vector.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -11,17 +12,29 @@ size_t CapacityBinaryCompleteTree(size_t capacity) {
     return 1 + capacity * 2;
 }
 
+Vector NewVectorFromBuf(void* buffer, size_t memb_size, size_t size,
+                        CapacityIncrease capacity_inc) {
+    if (!buffer || size == 0) {
+        return NewVector(memb_size, size, capacity_inc);
+    }
+
+    void* memb_buffer = malloc(memb_size);
+    return (Vector){buffer, memb_buffer, memb_size, size, size, capacity_inc};
+}
+
 Vector NewVector(size_t memb_size, size_t size, CapacityIncrease capacity_inc) {
-    if (size < 1) {
+    if (size == 0) {
         size = 1;
     }
 
     void* buffer = malloc(size * memb_size);
-    return (Vector){buffer, memb_size, 0, size, capacity_inc};
+    void* memb_buffer = malloc(memb_size);
+    return (Vector){buffer, memb_buffer, memb_size, 0, size, capacity_inc};
 }
 
 void FreeVector(Vector* vec) {
     free(vec->buffer);
+    free(vec->memb_buffer);
     vec->buffer = NULL;
     vec->capacity = 0;
     vec->size = 0;
@@ -93,6 +106,19 @@ int VectorInsert(Vector* vec, void* elem, size_t index) {
 void VectorClear(Vector* vec) {
     vec->size = 0;
     /*memset(vec->buffer, 0, vec->memb_size * vec->capacity);*/
+}
+
+int VectorSwap(Vector* vec, size_t index_a, size_t index_b) {
+    void *a, *b;
+    if (VectorIndex(vec, index_a, &a) == 1 || VectorIndex(vec, index_b, &b)) {
+        return 1;
+    }
+
+    memcpy(vec->memb_buffer, a, vec->memb_size);
+    memcpy(a, b, vec->memb_size);
+    memcpy(b, vec->memb_buffer, vec->memb_size);
+
+    return 0;
 }
 
 int VectorAppend(Vector* vec, void* elem) {
