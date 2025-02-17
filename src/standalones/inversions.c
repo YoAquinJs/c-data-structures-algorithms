@@ -58,14 +58,3 @@ int numInversions(int n, int* arr) {
     free(buff);
     return result;
 }
-
-int main() {
-    int arr[] = {1, 4, 5, 3, 2};
-    int n = sizeof(arr) / sizeof(int);
-    int inversions = numInversions(n, arr);
-
-    printf("expected inversions: 5\n");
-    printf("result: %d\n", inversions);
-
-    return 0;
-}

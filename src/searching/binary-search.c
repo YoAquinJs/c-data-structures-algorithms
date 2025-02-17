@@ -1,4 +1,4 @@
-#include "test-search.h"
+#include "searching.h"
 
 int BinarySearch(int n, int* arr, int key) {
     if (n == 0) return -1;
@@ -32,8 +32,4 @@ int RecursiveBSearchRecurion(int* arr, int key, int l, int r) {
 int RecursiveBsearch(int n, int* arr, int key) {
     if (n == 0) return -1;
     return RecursiveBSearchRecurion(arr, key, 0, n - 1);
-}
-
-int TestBinarySearch() {
-    return TestSearch(BinarySearch);
 }

@@ -1,4 +1,6 @@
-#include "test-sort.h"
+#include "sorting.h"
+
+#include <stdbool.h>
 
 void BubbleSort(int n, int* arr) {
     if (n == 0) return;
@@ -34,8 +36,4 @@ void BubbleSortDesc(int n, int* arr) {
         }
         if (sorted) break;
     }
-}
-
-int TestBubbleSort() {
-    return TestSort(BubbleSort, true);
 }

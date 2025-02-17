@@ -1,4 +1,4 @@
-#include "test-sort.h"
+#include "sorting.h"
 
 void InsertionSort(int n, int *arr) {
     if (n == 0) return;
@@ -41,8 +41,4 @@ void RecursiveInsertionSort(int n, int *arr) {
         j--;
     }
     arr[j + 1] = key;
-}
-
-int TestInsertionSort() {
-    return TestSort(InsertionSort, true);
 }

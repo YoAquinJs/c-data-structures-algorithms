@@ -118,22 +118,3 @@ Bitset* bin_sum(Bitset* num1, Bitset* num2) {
     bset_setn(result, i, carry);
     return result;
 }
-
-int main() {
-    Bitset* num1 = int_to_bset(5);
-    Bitset* num2 = int_to_bset(3);
-    Bitset* sum = bin_sum(num1, num2);
-
-    char* num1_str = str_bset(num1);
-    printf("%s\n", num1_str);
-    char* num2_str = str_bset(num2);
-    printf("%s\n", num2_str);
-    char* sum_str = str_bset(sum);
-    printf("%s\n", sum_str);
-
-    free_bset(num1);
-    free_bset(num2);
-    free_bset(sum);
-    free(sum_str);
-    return 0;
-}

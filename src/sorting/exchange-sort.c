@@ -1,4 +1,4 @@
-#include "test-sort.h"
+#include "sorting.h"
 
 void ExchangeSort(int n, int* arr) {
     if (n == 0) return;
@@ -28,8 +28,4 @@ void ExchangeSortDesc(int n, int* arr) {
             }
         }
     }
-}
-
-int TestExchangeSort() {
-    return TestSort(ExchangeSort, true);
 }

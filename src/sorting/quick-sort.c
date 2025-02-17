@@ -1,4 +1,4 @@
-#include "test-sort.h"
+#include "sorting.h"
 
 int Partition(int* arr, int left, int right) {
     int pivot = arr[right];
@@ -29,8 +29,4 @@ void QuickSortRecursion(int* arr, int left, int right) {
 void QuickSort(int n, int* arr) {
     if (n < 1) return;
     QuickSortRecursion(arr, 0, n - 1);
-}
-
-int TestQuickSort() {
-    return TestSort(QuickSort, true);
 }

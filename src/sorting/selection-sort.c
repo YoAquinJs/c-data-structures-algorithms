@@ -1,4 +1,4 @@
-#include "test-sort.h"
+#include "sorting.h"
 
 void SelectionSort(int n, int* arr) {
     if (n == 0) return;
@@ -30,8 +30,4 @@ void SelectionSortDesc(int n, int* arr) {
         arr[max] = arr[i];
         arr[i] = tmp;
     }
-}
-
-int TestSelectionSort() {
-    return TestSort(SelectionSort, true);
 }

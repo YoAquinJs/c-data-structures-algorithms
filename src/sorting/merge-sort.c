@@ -1,6 +1,6 @@
-#include <stdlib.h>
+#include "sorting.h"
 
-#include "test-sort.h"
+#include <stdlib.h>
 
 void Merge(int* arr, int* buff, int left, int mid, int right) {
     int _left, _rigth, arr_ptr;
@@ -36,8 +36,4 @@ void MergeSort(int n, int* arr) {
     int* buff = malloc(sizeof(int) * n);
     MergeSortRecursion(arr, buff, 0, n - 1);
     free(buff);
-}
-
-int TestMergeSort() {
-    return TestSort(MergeSort, true);
 }

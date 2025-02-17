@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "dsa/data-structures/vector.h"
+#include "data-structures/vector.h"
 
 BSTNode* NewBSTNode(void* value, size_t size) {
     BSTNode* node = malloc(sizeof(BSTNode) + size);
