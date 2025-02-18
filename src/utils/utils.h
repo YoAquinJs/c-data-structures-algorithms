@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -14,3 +15,5 @@ typedef int8_t (*Compare)(const void*, const void*);
 
 // swap elements in a buffer by indexes a and b
 void swap(void* buffer, size_t memb_size, size_t a, size_t b);
+
+#endif /* ifndef UTILS_H */

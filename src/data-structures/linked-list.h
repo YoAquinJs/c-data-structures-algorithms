@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LINKED_LIST_H
+#define LINKED_LIST_H
 
 #include <stddef.h>
 
@@ -28,3 +29,5 @@ int LinkedListInsert(LinkedList* list, size_t index, void* elem);
 // iteration
 int IterLinkedList(LinkedList* list, size_t start, size_t end,
                    LinkedListIterator iterator);
+
+#endif /* ifndef LINKED_LIST_H */

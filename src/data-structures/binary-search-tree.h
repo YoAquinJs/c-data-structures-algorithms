@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BINARY_SEARCH_TREE_H
+#define BINARY_SEARCH_TREE_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -52,3 +53,5 @@ void BSTLevelTraversal(BSTNode* root, BSTIterator iterator,
 // travel ancestros from head to node parent
 void BSTAncestorTraversal(BinarySearchTree* bst, void* elem,
                           BSTIterator iterator);
+
+#endif /* ifndef BINARY_SEARCH_TREE_H */

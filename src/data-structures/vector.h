@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VECTOR_H
+#define VECTOR_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -39,3 +40,5 @@ int VectorSwap(Vector* vec, size_t index_a, size_t index_b);
 
 int VectorPop(Vector* vec);
 int VectorAppend(Vector* vec, void* elem);
+
+#endif /* ifndef VECTOR_H */
