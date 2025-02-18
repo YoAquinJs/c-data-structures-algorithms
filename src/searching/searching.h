@@ -1,5 +1,14 @@
-int LinearSearch(int n, int* arr, int elem);
+#ifndef SEARCHING_H
+#define SEARCHING_H
 
-int RecursiveBsearch(int n, int* arr, int key);
+#include <stddef.h>
 
-int BinarySearch(int n, int* arr, int key);
+#include "utils/utils.h"
+
+void* LinearSearch(void* buffer, size_t memb_size, size_t size, Compare compare,
+                   void* memb);
+
+void* BinarySearch(void* buffer, size_t memb_size, size_t size, Compare compare,
+                   void* memb);
+
+#endif /* ifndef SEARCHING_H */
