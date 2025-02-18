@@ -1,39 +1,23 @@
 #include "sorting.h"
 
-#include <stdbool.h>
+bool BubbleSort(void* buffer, size_t memb_size, size_t size, Compare compare) {
+    if (size == 0) return true;
 
-void BubbleSort(int n, int* arr) {
-    if (n == 0) return;
-
-    int tmp;
     bool sorted;
-    for (int i = 0; i < n - 1; i++) {
+    for (size_t i = 0; i < size - 1; i++) {
         sorted = true;
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] <= arr[j + 1]) continue;
+        for (size_t j = 0; j < size - i - 1; j++) {
+            if (compare(INDEX(buffer, j, memb_size),
+                        INDEX(buffer, j + 1, memb_size)) <= 0) {
+                continue;
+            }
+
             sorted = false;
-            tmp = arr[j];
-            arr[j] = arr[j + 1];
-            arr[j + 1] = tmp;
+            swap(buffer, memb_size, j, j + 1);
         }
+
         if (sorted) break;
     }
-}
 
-void BubbleSortDesc(int n, int* arr) {
-    if (n == 0) return;
-
-    int tmp;
-    bool sorted;
-    for (int i = 0; i < n - 1; i++) {
-        sorted = true;
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] >= arr[j + 1]) continue;
-            sorted = false;
-            tmp = arr[j];
-            arr[j] = arr[j + 1];
-            arr[j + 1] = tmp;
-        }
-        if (sorted) break;
-    }
+    return true;
 }

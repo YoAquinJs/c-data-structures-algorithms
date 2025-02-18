@@ -1,33 +1,21 @@
 #include "sorting.h"
 
-void SelectionSort(int n, int* arr) {
-    if (n == 0) return;
+bool SelectionSort(void* buffer, size_t memb_size, size_t size,
+                   Compare compare) {
+    if (size == 0) return true;
 
-    int min, tmp;
-    for (int i = 0; i < n - 1; i++) {
+    size_t min;
+    for (size_t i = 0; i < size - 1; i++) {
         min = i;
-        for (int j = i + 1; j < n; j++) {
-            if (arr[j] < arr[min]) min = j;
+        for (size_t j = i + 1; j < size; j++) {
+            if (compare(INDEX(buffer, j, memb_size),
+                        INDEX(buffer, min, memb_size)) < 0) {
+                min = j;
+            }
         }
 
-        tmp = arr[min];
-        arr[min] = arr[i];
-        arr[i] = tmp;
+        swap(buffer, memb_size, i, min);
     }
-}
 
-void SelectionSortDesc(int n, int* arr) {
-    if (n == 0) return;
-
-    int max, tmp;
-    for (int i = 0; i < n - 1; i++) {
-        max = i;
-        for (int j = i + 1; j < n; j++) {
-            if (arr[j] > arr[max]) max = j;
-        }
-
-        tmp = arr[max];
-        arr[max] = arr[i];
-        arr[i] = tmp;
-    }
+    return true;
 }

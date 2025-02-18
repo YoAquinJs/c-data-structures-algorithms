@@ -1,11 +1,20 @@
-void ExchangeSort(int n, int* arr);
+#pragma once
 
-void QuickSort(int n, int* arr);
+#include <stdbool.h>
+#include <stddef.h>
 
-void BubbleSort(int n, int* arr);
+#include "utils/utils.h"
 
-void SelectionSort(int n, int* arr);
+bool ExchangeSort(void* buffer, size_t memb_size, size_t size, Compare compare);
 
-void InsertionSort(int n, int* arr);
+bool BubbleSort(void* buffer, size_t memb_size, size_t size, Compare compare);
 
-void MergeSort(int n, int* arr);
+bool SelectionSort(void* buffer, size_t memb_size, size_t size,
+                   Compare compare);
+
+bool InsertionSort(void* buffer, size_t memb_size, size_t size,
+                   Compare compare);
+
+bool MergeSort(void* buffer, size_t memb_size, size_t size, Compare compare);
+
+bool QuickSort(void* buffer, size_t memb_size, size_t size, Compare compare);

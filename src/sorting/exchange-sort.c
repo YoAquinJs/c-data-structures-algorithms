@@ -1,31 +1,17 @@
 #include "sorting.h"
 
-void ExchangeSort(int n, int* arr) {
-    if (n == 0) return;
+bool ExchangeSort(void* buffer, size_t memb_size, size_t size,
+                  Compare compare) {
+    if (size == 0) return true;
 
-    int tmp;
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (arr[i] > arr[j]) {
-                tmp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = tmp;
+    for (size_t i = 0; i < size - 1; i++) {
+        for (size_t j = i + 1; j < size; j++) {
+            if (compare(INDEX(buffer, i, memb_size),
+                        INDEX(buffer, j, memb_size)) > 0) {
+                swap(buffer, memb_size, i, j);
             }
         }
     }
-}
 
-void ExchangeSortDesc(int n, int* arr) {
-    if (n == 0) return;
-
-    int tmp;
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (arr[i] < arr[j]) {
-                tmp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = tmp;
-            }
-        }
-    }
+    return true;
 }

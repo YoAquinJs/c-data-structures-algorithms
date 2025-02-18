@@ -1,32 +1,43 @@
 #include "sorting.h"
 
-int Partition(int* arr, int left, int right) {
-    int pivot = arr[right];
+#include <stdlib.h>
+#include <string.h>
 
-    int i = left - 1, j, tmp;
-    for (j = left; j < right; j++) {
-        if (arr[j] >= pivot) continue;
-        i++;
-        tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-    }
+#include "utils/utils.h"
 
-    tmp = arr[i + 1];
-    arr[i + 1] = arr[right];
-    arr[right] = tmp;
-    return i + 1;
-}
-
-void QuickSortRecursion(int* arr, int left, int right) {
+void QuickSortRecursion(void* buffer, void* pivot_buf, size_t memb_size,
+                        Compare compare, size_t left, size_t right) {
     if (left >= right) return;
 
-    int pivot = Partition(arr, left, right);
-    QuickSortRecursion(arr, left, pivot - 1);
-    QuickSortRecursion(arr, pivot + 1, right);
+    // partition
+
+    // copy pivot
+    memcpy(pivot_buf, INDEX(buffer, right, memb_size), memb_size);
+
+    size_t i = left - memb_size;
+    for (size_t j = left; j < right; j++) {
+        if (compare(INDEX(buffer, j, memb_size), pivot_buf) > 0) {
+            continue;
+        }
+
+        i++;
+        swap(buffer, memb_size, i, j);
+    }
+
+    // pivot last position
+    i++;
+    swap(buffer, memb_size, i, right);
+
+    QuickSortRecursion(buffer, pivot_buf, memb_size, compare, left, i - 1);
+    QuickSortRecursion(buffer, pivot_buf, memb_size, compare, i + 1, right);
 }
 
-void QuickSort(int n, int* arr) {
-    if (n < 1) return;
-    QuickSortRecursion(arr, 0, n - 1);
+bool QuickSort(void* buffer, size_t memb_size, size_t size, Compare compare) {
+    if (size == 0) return true;
+
+    void* pivot_buf = malloc(memb_size);
+    if (!pivot_buf) return false;
+
+    QuickSortRecursion(buffer, pivot_buf, memb_size, compare, 0, size - 1);
+    return true;
 }
