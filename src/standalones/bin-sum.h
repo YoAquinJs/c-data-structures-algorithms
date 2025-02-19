@@ -5,15 +5,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef int8_t bit_block;
+#include "utils/utils.h"
+
 typedef struct {
     bit_block* bits;
     size_t len;
     size_t blocks;
 } Bitset;
-
-#define BITS_IN_BYTE 8
-#define BITS_IN_BLOCK (sizeof(bit_block) * BITS_IN_BYTE)
 
 void BitsetClear(Bitset* bitset);
 
