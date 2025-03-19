@@ -11,27 +11,24 @@ RELEASE ?= 0
 ABS_INCLUDE ?= 1
 
 # debug flags
-CDEBUG := -g -DDEBUG
-CRELEASE := -O2
 ifeq ($(RELEASE), 1)
-	CFLAGS += $(CRELEASE)
+	CFLAGS += -O2
 else
-	CFLAGS += $(CDEBUG)
+	CFLAGS += -g -DDEBUG
 endif
 
 # directories
 
 SRC_DIR := src
 TESTS_DIR := tests
+BUILD_DIR := build
 
 ifeq ($(ABS_INCLUDE), 1)
 	CFLAGS += -I './$(SRC_DIR)'
 endif
 
-UTILS_DIR := utils
-BUILD_DIR := build
-
 DSA_DIR := dsa
+UTILS_DIR := utils
 
 # files and obj files
 

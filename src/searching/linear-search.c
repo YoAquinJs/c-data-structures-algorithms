@@ -8,7 +8,7 @@ void* LinearSearch(void* buffer, size_t memb_size, size_t size, Compare compare,
 
     void* max = INDEX(buffer, size, memb_size);
 
-    for (; buffer < max; INDEX(buffer, 1, memb_size)) {
+    for (; buffer < max; buffer = INDEX(buffer, 1, memb_size)) {
         if (compare(buffer, memb) == 0) return buffer;
     }
 

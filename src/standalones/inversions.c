@@ -9,8 +9,8 @@ implementation for excersice 2,1-5
 
 #include "utils/utils.h"
 
-int Merge(void* buffer, void* buffer_cp, size_t memb_size, Compare compare,
-          size_t left, size_t mid, size_t right) {
+int NumInversionsMerge(void* buffer, void* buffer_cp, size_t memb_size,
+                       Compare compare, size_t left, size_t mid, size_t right) {
     // copy left and right to buffer_cp
     memcpy(INDEX(buffer_cp, left, memb_size), INDEX(buffer, left, memb_size),
            (1 + mid - left) * memb_size);
@@ -56,7 +56,8 @@ int NumInversionsRecursion(void* buffer, void* buffer_cp, size_t memb_size,
                                      left, mid);
     result += NumInversionsRecursion(buffer, buffer_cp, memb_size, compare,
                                      mid + 1, right);
-    result += Merge(buffer, buffer_cp, memb_size, compare, left, mid, right);
+    result += NumInversionsMerge(buffer, buffer_cp, memb_size, compare, left,
+                                 mid, right);
 
     return result;
 }
